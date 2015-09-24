@@ -20,6 +20,8 @@ function preload() {
 function create() {
     layout.init(app.world.centerX, app.world.centerY);
 
+    app.input.onDown.add(scenario.play, this);
+
     img.bg = app.add.sprite(app.world.centerX, app.world.centerY, res.img.bg);
     img.bg.anchor.setTo(0.5, 0.5);
 
