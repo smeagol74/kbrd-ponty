@@ -53,14 +53,14 @@ function create() {
 
     counter = {
         left: {
-            a: mkMaskedNumbers(layout.counter.left.a),
-            b: mkMaskedNumbers(layout.counter.left.b),
-            c: mkMaskedNumbers(layout.counter.left.c)
+            a: mkTiledNumbers(layout.counter.left.a),
+            b: mkTiledNumbers(layout.counter.left.b),
+            c: mkTiledNumbers(layout.counter.left.c)
         },
         right: {
-            a: mkMaskedNumbers(layout.counter.right.a),
-            b: mkMaskedNumbers(layout.counter.right.b),
-            c: mkMaskedNumbers(layout.counter.right.c)
+            a: mkTiledNumbers(layout.counter.right.a),
+            b: mkTiledNumbers(layout.counter.right.b),
+            c: mkTiledNumbers(layout.counter.right.c)
         }
     };
 
@@ -73,6 +73,12 @@ function mkMaskedNumbers(_layout) {
     mask.beginFill(0xffffff);
     mask.drawRect(_layout.x, _layout.y, _layout.w, _layout.h);
     result.mask = mask;
+    return result;
+}
+
+function mkTiledNumbers(_layout) {
+    var result = app.add.tileSprite(_layout.x, _layout.y, _layout.w, _layout.h, res.img.numbers);
+    result.tilePosition.y = _layout.h * 11;
     return result;
 }
 
