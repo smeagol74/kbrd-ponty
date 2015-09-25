@@ -53,39 +53,25 @@ function create() {
 
     counter = {
         left: {
-            a: mkMaskedGroup(100, 100, 100, 100),
-            b: mkMaskedGroup(100, 100, 100, 100),
-            c: mkMaskedGroup(100, 100, 100, 100),
-            removeAll: function () {
-                counter.left.a.removeAll();
-                counter.left.b.removeAll();
-                counter.left.c.removeAll();
-            }
+            a: mkMaskedNumbers(layout.counter.left.a),
+            b: mkMaskedNumbers(layout.counter.left.b),
+            c: mkMaskedNumbers(layout.counter.left.c)
         },
         right: {
-            a: mkMaskedGroup(100, 100, 100, 100),
-            b: mkMaskedGroup(100, 100, 100, 100),
-            c: mkMaskedGroup(100, 100, 100, 100),
-            removeAll: function () {
-                counter.right.a.removeAll();
-                counter.right.b.removeAll();
-                counter.right.c.removeAll();
-            }
-        },
-        removeAll: function () {
-            counter.left.removeAll();
-            counter.right.removeAll();
+            a: mkMaskedNumbers(layout.counter.right.a),
+            b: mkMaskedNumbers(layout.counter.right.b),
+            c: mkMaskedNumbers(layout.counter.right.c)
         }
     };
 
     scenario.init();
 }
 
-function mkMaskedGroup(x, y, w, h) {
-    var result = app.add.group();
+function mkMaskedNumbers(_layout) {
+    var result = app.add.sprite(_layout.x, _layout.y, res.img.numbers);
     var mask = app.add.graphics(0, 0);
     mask.beginFill(0xffffff);
-    mask.drawRect(w, y, w, h);
+    mask.drawRect(_layout.x, _layout.y, _layout.w, _layout.h);
     result.mask = mask;
     return result;
 }
