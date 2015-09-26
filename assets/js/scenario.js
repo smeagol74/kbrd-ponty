@@ -1,90 +1,46 @@
 var scenario = {
     current: 0,
-    stages: [],
+    init: function () {
+    },
     play: function () {
         if (scenario.current < scenario.stages.length) {
-            scenario.stages[scenario.current].play();
+            scenario.stages[scenario.current].apply(this);
             scenario.current = scenario.current + 1;
         }
     },
-    update: function () {
-        if (scenario.current > 0 && scenario.current <= scenario.stages.length) {
-            scenario.stages[scenario.current - 1].update();
-        }
-    }
+    stages: [
+        intro.play, // 0 : 0
+        scene.counter.set(0, 5, 2500),
+        scene.counter.set(10, 5, 2500),
+        scene.counter.set(10, 15, 2000),
+        scene.counter.set(20, 15, 2000),
+        scene.counter.set(20, 65, 2000),
+        scene.counter.set(70, 65, 2000),
+        scene.counter.set(70, 85, 2000),
+        scene.counter.set(120, 85, 2000),
+        scene.counter.set(120, 90, 2000),
+        scene.counter.set(120, 85, 2000),
+        scene.counter.set(120, 95, 2000),
+        scene.counter.set(120, 100, 2000),
+        scene.counter.set(225, 100, 2000),
+        scene.counter.set(240, 100, 2000),
+        scene.counter.set(240, 145, 2000),
+        scene.counter.set(240, 195, 2000),
+        scene.counter.set(240, 250, 2000),
+        scene.counter.set(240, 295, 2000),
+        scene.counter.set(240, 305, 2000),
+        scene.counter.set(340, 305, 2000),
+        scene.counter.set(340, 350, 2000),
+        scene.counter.set(340, 370, 2000),
+        scene.counter.set(340, 325, 2000),
+        scene.counter.set(390, 325, 2000),
+        scene.counter.set(400, 325, 2000),
+        scene.counter.set(450, 325, 2000),
+        scene.counter.auto(0, -1, 1000),
+        scene.counter.auto(0, -2, 1000),
+        scene.finishHim,
+        scene.counter.auto(0, -3, 1000),
+        scene.counter.win(34, 1000),
+        scene.counter.set(451, 7777, 1000)
+    ]
 };
-
-(function () {
-
-    scenario.intro = function () {
-        intro.intro();
-    };
-
-    scenario.stages = [
-        {
-            play: function () {
-                console.log('Шаг 1');
-                var tween = app.add.tween(counter.left.c.tilePosition);
-                tween.to({y: counter.left.c.tilePosition.y + layout.counter.left.c.h * 3}, 2500, Phaser.Easing.Elastic.Out, true);
-                snd.money.play();
-            },
-            update: function () {
-
-            }
-        },
-        {
-            play: function () {
-                console.log('Шаг 1');
-                var tween = app.add.tween(counter.left.c.tilePosition);
-                tween.to({y: counter.left.c.tilePosition.y + layout.counter.left.c.h}, 2500, Phaser.Easing.Elastic.Out, true);
-                snd.money.play();
-            },
-            update: function () {
-
-            }
-        },
-        {
-            play: function () {
-                console.log('Шаг 1');
-                var tween = app.add.tween(counter.left.c.tilePosition);
-                tween.to({y: counter.left.c.tilePosition.y + layout.counter.left.c.h}, 1000, Phaser.Easing.Elastic.Out, true);
-                snd.money.play();
-            },
-            update: function () {
-
-            }
-        },
-        {
-            play: function () {
-                console.log('Шаг 1');
-                var tween = app.add.tween(counter.left.c.tilePosition);
-                tween.to({y: counter.left.c.tilePosition.y - layout.counter.left.c.h}, 3000, Phaser.Easing.Elastic.Out, true);
-                snd.tickDown.play();
-            },
-            update: function () {
-
-            }
-        },
-        {
-            play: function () {
-                console.log('Шаг 1');
-                var tween = app.add.tween(counter.left.b.tilePosition);
-                tween.to({y: counter.left.b.tilePosition.y + layout.counter.left.b.h}, 5000, Phaser.Easing.Elastic.Out, true);
-                snd.money.play();
-            },
-            update: function () {
-
-            }
-        },
-        {
-            play: function () {
-                console.log('Шаг 3');
-                snd.win.play();
-                scenario.current = -1;
-            },
-            update: function () {
-
-            }
-        }
-    ];
-}());

@@ -1,10 +1,7 @@
-var app = new Phaser.Game("100", "100", Phaser.AUTO, '', {preload: preload, create: create, update: update});
+var app = new Phaser.Game("100", "100", Phaser.AUTO, '', {preload: preload, create: create});
 
-var img = {};
 var snd = {};
-var tween = {};
 var key = {};
-var counter = {};
 var layer = {};
 
 function preload() {
@@ -12,33 +9,32 @@ function preload() {
         app.load.image(name, 'assets/img/1280x720/' + name + '.png');
     });
 
-    _(res.snd._all()).each(function(name){
+    _(res.snd._all()).each(function (name) {
         app.load.audio(name, 'assets/snd/' + name + '.ogg');
     });
 
 }
 
 function create() {
-    layout.init(app.world.centerX, app.world.centerY);
+    app.stage.disableVisibilityChange = true;
 
     app.input.onDown.add(scenario.play, this);
 
-    layer.scene = app.add.group();
-    layer.counters = app.add.group();
-    layer.like = app.add.group();
-    layer.fireworks = app.add.group();
-    layer.intro = app.add.group();
+    layer = {
+        scene: mkLayer({z: 0}),
+        counters: mkLayer({z: 1}),
+        like: mkLayer({z: 2}),
+        fireworks: mkLayer({z: 3}),
+        intro: mkLayer({z: 4})
+    };
 
-    layer.scene.z = 0;
-    layer.counters.z = 1;
-    layer.like.z = 2;
-    layer.fireworks.z = 3;
-    layer.intro.z = 4;
-
-    snd.money = app.add.audio(res.snd.money);
-    snd.tickDown = app.add.audio(res.snd.tickDown);
-    snd.tickUp = app.add.audio(res.snd.tickUp);
-    snd.win = app.add.audio(res.snd.win);
+    snd = {
+        finishHim: app.add.sound(res.snd.finishHim),
+        like: app.add.sound(res.snd.like),
+        tickDown: app.add.sound(res.snd.tickDown),
+        tickUp: app.add.sound(res.snd.tickUp),
+        win: app.add.sound(res.snd.win)
+    };
 
     key = app.input.keyboard.addKeys({
         play: res.key.play
@@ -46,9 +42,5 @@ function create() {
 
     key.play.onDown.add(scenario.play, this);
 
-    scenario.intro();
-}
-
-function update() {
-    scenario.update();
+    scenario.init();
 }

@@ -1,3 +1,6 @@
+/**
+ * Расположение и размеры параметризованных объектов
+ */
 var layout = {
     intro: {
         grelka: {
@@ -54,26 +57,5 @@ var layout = {
                 h: 200
             }
         }
-    },
-    init: function(x, y){
-        function apply(src, tgt) {
-            _(src).each(function(val, key){
-                switch(key) {
-                    case 'x':
-                        tgt.x = src.x + x;
-                        break;
-                    case 'y':
-                        tgt.y = src.y + y;
-                        break;
-                    default:
-                        if (_.isObject(val)) {
-                            apply(val, tgt[key]);
-                        }
-                }
-            });
-        }
-        apply(_layout, layout, x, y);
     }
 };
-
-var _layout = JSON.parse(JSON.stringify(layout));
