@@ -1,4 +1,14 @@
 var layout = {
+    intro: {
+        grelka: {
+            x: 0,
+            y: 0
+        },
+        vs: {
+            x: 0,
+            y: 0
+        }
+    },
     colon: {
         x: 0,
         y: -38

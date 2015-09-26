@@ -5,10 +5,11 @@ var snd = {};
 var tween = {};
 var key = {};
 var counter = {};
+var layer = {};
 
 function preload() {
     _(res.img._all()).each(function (name) {
-        app.load.image(name, 'assets/img/' + name + '.png');
+        app.load.image(name, 'assets/img/1280x720/' + name + '.png');
     });
 
     _(res.snd._all()).each(function(name){
@@ -22,15 +23,17 @@ function create() {
 
     app.input.onDown.add(scenario.play, this);
 
-    img.bg = app.add.sprite(app.world.centerX, app.world.centerY, res.img.bg);
-    img.bg.anchor.setTo(0.5, 0.5);
+    layer.scene = app.add.group();
+    layer.counters = app.add.group();
+    layer.like = app.add.group();
+    layer.fireworks = app.add.group();
+    layer.intro = app.add.group();
 
-    img.colon = app.add.sprite(layout.colon.x, layout.colon.y, res.img.colon);
-    img.colon.anchor.setTo(0.5, 0.5);
-    img.colon.alpha = 0;
-
-    tween.colon = app.add.tween(img.colon);
-    tween.colon.to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+    layer.scene.z = 0;
+    layer.counters.z = 1;
+    layer.like.z = 2;
+    layer.fireworks.z = 3;
+    layer.intro.z = 4;
 
     snd.money = app.add.audio(res.snd.money);
     snd.tickDown = app.add.audio(res.snd.tickDown);
@@ -38,67 +41,14 @@ function create() {
     snd.win = app.add.audio(res.snd.win);
 
     key = app.input.keyboard.addKeys({
-        money: res.key.money,
-        tickDown: res.key.tickDown,
-        tickUp: res.key.tickUp,
-        win: res.key.win,
         play: res.key.play
     });
 
-    key.money.onDown.add(playFx, this);
-    key.tickDown.onDown.add(playFx, this);
-    key.tickUp.onDown.add(playFx, this);
-    key.win.onDown.add(playFx, this);
     key.play.onDown.add(scenario.play, this);
 
-    counter = {
-        left: {
-            a: mkTiledNumbers(layout.counter.left.a),
-            b: mkTiledNumbers(layout.counter.left.b),
-            c: mkTiledNumbers(layout.counter.left.c)
-        },
-        right: {
-            a: mkTiledNumbers(layout.counter.right.a),
-            b: mkTiledNumbers(layout.counter.right.b),
-            c: mkTiledNumbers(layout.counter.right.c)
-        }
-    };
-
-    scenario.init();
-}
-
-function mkMaskedNumbers(_layout) {
-    var result = app.add.sprite(_layout.x, _layout.y, res.img.numbers);
-    var mask = app.add.graphics(0, 0);
-    mask.beginFill(0xffffff);
-    mask.drawRect(_layout.x, _layout.y, _layout.w, _layout.h);
-    result.mask = mask;
-    return result;
-}
-
-function mkTiledNumbers(_layout) {
-    var result = app.add.tileSprite(_layout.x, _layout.y, _layout.w, _layout.h, res.img.numbers);
-    result.tilePosition.y = _layout.h * 11;
-    return result;
+    scenario.intro();
 }
 
 function update() {
     scenario.update();
-}
-
-function playFx(key) {
-    switch (key.keyCode) {
-        case res.key.money:
-            snd.money.play();
-            break;
-        case res.key.tickDown:
-            snd.tickDown.play();
-            break;
-        case res.key.tickUp:
-            snd.tickUp.play();
-            break;
-        case res.key.win:
-            snd.win.play();
-            break;
-    }
 }

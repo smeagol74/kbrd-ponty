@@ -16,7 +16,8 @@ var scenario = {
 
 (function () {
 
-    scenario.init = function () {
+    scenario.intro = function () {
+        intro.intro();
     };
 
     scenario.stages = [
