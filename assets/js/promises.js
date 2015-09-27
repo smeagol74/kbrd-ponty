@@ -3,7 +3,7 @@ function startTweenDeferred() {
 
     function promise(tween) {
         var deferred = new $.Deferred();
-        tween.onComplete.add(function(){
+        tween.onComplete.addOnce(function(){
             console.log('--- completed tween: ' + tween.name);
             deferred.resolve();
         });
@@ -46,7 +46,7 @@ function playSoundDeferred() {
 
     function promise(sound) {
         var deferred = new $.Deferred();
-        sound.onStop.add(function(){
+        sound.onStop.addOnce(function(){
             console.log('--- completed sound: ' + sound.name);
             deferred.resolve();
         });
@@ -72,12 +72,34 @@ function playSoundImmediately() {
     return playSoundDeferred.apply(this, arguments)();
 }
 
-function join() {
-    return $.when.apply(this, _(arguments).map(function(param){
-        if (_.isFunction(param)) {
-            return param();
-        } else {
-            return param;
-        }
-    }));
+function joinDeferred() {
+    var promises = Array.prototype.slice.call(arguments);
+
+    return function(){
+        return $.when.apply(this, _(promises).map(function(promise){
+            if (_.isFunction(promise)) {
+                return promise.apply();
+            } else {
+                return promise;
+            }
+        }));
+    }
+}
+
+function joinImmediately() {
+    return joinDeferred.apply(this, arguments)();
+}
+
+function chainDeferred() {
+    var promises = Array.prototype.slice.call(arguments);
+    return function(){
+        var res = _(promises).first().apply();
+        _(_(promises).rest()).each(function(promise){
+            res = res.then(promise);
+        });
+        return res;
+    }
+}
+function chainImmediately() {
+    return chainDeferred.apply(this, arguments)();
 }
