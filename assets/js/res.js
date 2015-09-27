@@ -32,11 +32,12 @@ var res = {
     snd: {
         finishHim: 'finish-him',
         like: 'like',
+        punch: 'punch',
         tickDown: 'tick-down',
         tickUp: 'tick-up',
         win: 'win',
         _all: function(){
-            return [res.snd.finishHim, res.snd.like, res.snd.tickUp, res.snd.tickDown, res.snd.win];
+            return [res.snd.finishHim, res.snd.like, res.snd.punch, res.snd.tickUp, res.snd.tickDown, res.snd.win];
         }
     },
     key: {

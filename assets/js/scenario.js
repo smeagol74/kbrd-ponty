@@ -16,40 +16,22 @@ var scenario = {
         //    scene.render();
         //    return true;
         //},
-        //function(){
-        //    //joinImmediately(
-        //    //    scene.animate.dropFourthRightCounter(),
-        //    //    chainDeferred(delay(1000),
-        //    //        scene.animate.incCounter(scene.sprite.counter.right.a0, 200),
-        //    //        scene.animate.incCounter(scene.sprite.counter.right.a0, 200),
-        //    //        scene.animate.incCounter(scene.sprite.counter.right.a0, 200),
-        //    //        scene.animate.incCounter(scene.sprite.counter.right.a0, 200),
-        //    //        scene.animate.incCounter(scene.sprite.counter.right.a0, 200),
-        //    //        delay(2000),
-        //    //        scene.animate.decCounter(scene.sprite.counter.right.a0, 200),
-        //    //        scene.animate.decCounter(scene.sprite.counter.right.a0, 200),
-        //    //        scene.animate.decCounter(scene.sprite.counter.right.a0, 200)
-        //    //    )
-        //    //);
-        //    //chainImmediately(
-        //    //    scene.animate.showLike(1, scene.sprite.like.left, layout.like.left),
-        //    //    scene.animate.showLike(1, scene.sprite.like.right, layout.like.right)
-        //    //);
-        //    //joinImmediately(
-        //    //    chainDeferred.apply(this, _(_.range(0, 5)).map(function(){ return scene.animate.incCounter(scene.sprite.counter.right.a, 2000); })),
-        //    //    chainDeferred.apply(this, _(_.range(0, 50)).map(function(){ return scene.animate.incCounter(scene.sprite.counter.right.b, 200); })),
-        //    //    chainDeferred.apply(this, _(_.range(0, 500)).map(function(){ return scene.animate.incCounter(scene.sprite.counter.right.c, 20); }))
-        //    //);
-        //    return true;
-        //},
-        scene.counter.set(0, 5, 2000),
-        scene.counter.set(10, 5, 2000),
-        scene.counter.set(10, 15, 2000),
-        scene.counter.set(20, 15, 2000),
-        scene.counter.set(20, 65, 2000),
-        scene.like.set(5, 5, 5000),
-        //scene.counter.set(70, 65, 2000),
-        //scene.counter.set(70, 85, 2000),
+        scene.counter.set(0, 5, 1000),
+        scene.counter.set(10, 5, 1000),
+        scene.counter.set(10, 15, 1000),
+        function(){
+            chainImmediately(
+                scene.animate.showLike(1, scene.sprite.like.left, layout.like.left),
+                scene.animate.showLike(1, scene.sprite.like.right, layout.like.right)
+            );
+            return true;
+        },
+        scene.counter.set(10, 10, 1000),
+        scene.counter.set(451, 10, 1000),
+        //scene.counter.set(20, 15, 1000),
+        //scene.counter.set(20, 65, 2000),
+        //scene.counter.set(70, 65, 1000),
+        //scene.counter.set(70, 85, 1000),
         //scene.counter.set(120, 85, 2000),
         //scene.counter.set(120, 90, 2000),
         //scene.counter.set(120, 85, 2000),
@@ -74,6 +56,6 @@ var scenario = {
         //scene.finishHim,
         //scene.counter.auto(0, -3, 1000),
         //scene.counter.win(34, 1000),
-        scene.counter.set(451, 777, 10000)
+        scene.counter.set(451, 7777, 10000)
     ]
 };

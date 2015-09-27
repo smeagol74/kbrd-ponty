@@ -28,7 +28,7 @@ var scene = {
             y: -1 * app.world.height
         });
         scene.sprite.colon = mkSprite(layout.colon.normal.x, layout.colon.normal.y, res.img.colon, layer.counters, {alpha: 0});
-        scene.tween.colon = mkTween('scene.colon', scene.sprite.colon).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+        scene.tween.colon = mkTween('scene.colon', scene.sprite.colon).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 0, 10000, true);
 
         scene.sprite.like = {
             left: mkSprite(layout.like.left.hidden.x, layout.like.left.hidden.y, res.img.like, layer.like, layout.like.left.hidden),
@@ -51,7 +51,7 @@ var scene = {
             tilePosition: function (value) {
                 return layout.counter.size.h * (11 + value);
             },
-            digits: function(value) {
+            digits: function (value) {
                 var result = {
                     a0: 0,
                     a: 0,
@@ -77,13 +77,39 @@ var scene = {
                 }
                 return result;
             },
-            turns: function(value) {
-                return {
-                    a0: Math.floor(value / 1000),
-                    a: Math.floor(value / 100),
-                    b: Math.floor(value / 10),
-                    c: value
+            turns: function (valueFrom, valueTo) {
+                var s = (valueTo - valueFrom < 0) ? -1 : 1;
+                var res = {
+                    a0: 0,
+                    a: 0,
+                    b: 0,
+                    c: 0
                 };
+
+                function switchDigit(val) {
+                    if (s > 0) {
+                        return val % 10 == 0;
+                    } else {
+                        return val % 10 == 9;
+                    }
+                }
+
+                while (valueFrom != valueTo) {
+                    var d0 = scene.model.counter.digits(valueFrom);
+                    valueFrom += s;
+                    var d = scene.model.counter.digits(valueFrom);
+                    res.c += s;
+                    if (d.c != d0.c && switchDigit(d.c)) {
+                        res.b += s;
+                        if (d.b != d0.b && switchDigit(d.b)) {
+                            res.a += s;
+                            if (d.a != d0.a && switchDigit(d.a)) {
+                                res.a0 += s;
+                            }
+                        }
+                    }
+                }
+                return res;
             }
         },
         like: {
@@ -110,53 +136,101 @@ var scene = {
          */
         set: function (left, right, time) {
 
-            function mkChain(animations, count, digit, time, sprite){
-                if (count != 0) {
-                    var duration = time / Math.abs(count);
-                    var res = _(_.range(0, Math.abs(count))).map(function(){
-                        if (count > 0) {
-                            return scene.animate.incCounter(sprite, duration);
-                        } else {
-                            return scene.animate.decCounter(sprite, duration);
-                        }
-                    });
-                    res.push(function(){
-                        var res = new $.Deferred();
-                        sprite.tilePosition.y = scene.model.counter.tilePosition(digit);
-                        res.resolve();
-                        return res.promise();
-                    });
-                    animations.push(chainDeferred.apply(this, res));
-                }
-            }
-
             return scene.execRendered(function () {
                 console.group('scene.counter.set', left, ':', right, 'in', time, 'ms');
-                var turns = {
-                    left: scene.model.counter.turns(left - scene.model.counter.left),
-                    right: scene.model.counter.turns(right - scene.model.counter.right)
-                };
-                var digits = {
-                    left: scene.model.counter.digits(left),
-                    right: scene.model.counter.digits(right)
-                };
+                var chain = [];
+                if (right < 1000 || scene.model.counter.right >= 1000) {
+                    chain.push(joinDeferred(
+                        scene.animate.updateCounters(scene.sprite.counter.left, scene.model.counter.left, left, time),
+                        scene.animate.updateCounters(scene.sprite.counter.right, scene.model.counter.right, right, time)
+                    ));
+                    var sounds = [];
+                    if (left > scene.model.counter.left || right > scene.model.counter.right) {
+                        sounds.push(snd.tickUp);
+                    }
+                    if (left < scene.model.counter.left || right < scene.model.counter.right) {
+                        sounds.push(snd.tickDown);
+                    }
+                    if (sounds.length > 0) {
+                        chain.push(joinDeferred.apply(this, _(sounds).map(function(sound){
+                            return playSoundDeferred(sound);
+                        })));
+                    }
+                } else {
+                    var time0 = time / (right - scene.model.counter.right) * (999 - scene.model.counter.right);
+                    chain.push(joinDeferred(
+                        scene.animate.updateCounters(scene.sprite.counter.left, scene.model.counter.left, left, time0),
+                        scene.animate.updateCounters(scene.sprite.counter.right, scene.model.counter.right, 999, time0)
+                    ));
+                    var sounds = [];
+                    if (left > scene.model.counter.left) {
+                        sounds.push(snd.tickUp);
+                    }
+                    if (left < scene.model.counter.left) {
+                        sounds.push(snd.tickDown);
+                    }
+                    if (sounds.length > 0) {
+                        chain.push(joinDeferred.apply(this, _(sounds).map(function(sound){
+                            return playSoundDeferred(sound);
+                        })));
+                    }
+                    if (right = 7777) {
+                        time0 = time / (right - scene.model.counter.right) * (7600 - 999);
+                        chain.push(joinDeferred(
+                            scene.animate.dropFourthRightCounter(),
+                            scene.animate.updateCounters(scene.sprite.counter.right, 999, 7600, time0)
+                        ));
+                        chain.push(function () {
+                            var def = new $.Deferred();
+                            scene.sprite.counter.right.a.loadTexture(res.img.numbers7);
+                            def.resolve();
+                            return def.promise();
+                        });
+                        time0 = time / (right - scene.model.counter.right) * (7760 - 7600);
+                        chain.push(scene.animate.updateCounters(scene.sprite.counter.right, 7600, 7760, time0));
+                        chain.push(function () {
+                            var def = new $.Deferred();
+                            scene.sprite.counter.right.b.loadTexture(res.img.numbers7);
+                            def.resolve();
+                            return def.promise();
+                        });
+                        time0 = time / (right - scene.model.counter.right) * (7776 - 7760);
+                        chain.push(scene.animate.updateCounters(scene.sprite.counter.right, 7760, 7776, time0));
+                        chain.push(function () {
+                            var def = new $.Deferred();
+                            scene.sprite.counter.right.c.loadTexture(res.img.numbers7);
+                            def.resolve();
+                            return def.promise();
+                        });
+                        time0 = time / (right - scene.model.counter.right) * (7777 - 7776);
+                        chain.push(scene.animate.updateCounters(scene.sprite.counter.right, 7776, 7777, time0));
+                        chain.push(scene.animate.win(scene.sprite.counter.right));
+                    } else {
+                        time0 = time / (right - scene.model.counter.right) * (right - 999);
+                        chain.push(joinDeferred(
+                            scene.animate.dropFourthRightCounter(),
+                            scene.animate.updateCounters(scene.sprite.counter.right, 999, right, time0)
+                        ));
+                        var sounds = [];
+                        if (right > scene.model.counter.right) {
+                            sounds.push(snd.tickUp);
+                        }
+                        if (right < scene.model.counter.right) {
+                            sounds.push(snd.tickDown);
+                        }
+                        if (sounds.length > 0) {
+                            chain.push(joinDeferred.apply(this, _(sounds).map(function(sound){
+                                return playSoundDeferred(sound);
+                            })));
+                        }
+                    }
+                }
+                chain.push(function () {
+                    console.groupEnd();
+                });
+                chainImmediately.apply(this, chain);
                 scene.model.counter.left = left;
                 scene.model.counter.right = right;
-                var animations = [];
-                mkChain(animations, turns.left.a, digits.left.a, time, scene.sprite.counter.left.a);
-                mkChain(animations, turns.left.b, digits.left.b, time, scene.sprite.counter.left.b);
-                mkChain(animations, turns.left.c, digits.left.c, time, scene.sprite.counter.left.c);
-                mkChain(animations, turns.right.a0, digits.right.a0, time, scene.sprite.counter.right.a0);
-                mkChain(animations, turns.right.a, digits.right.a, time, scene.sprite.counter.right.a);
-                mkChain(animations, turns.right.b, digits.right.b, time, scene.sprite.counter.right.b);
-                mkChain(animations, turns.right.c, digits.right.c, time, scene.sprite.counter.right.c);
-                if (animations.length > 0) {
-                    chainImmediately(joinDeferred.apply(this, animations), function(){
-                        console.groupEnd();
-                    })
-                } else {
-                    console.groupEnd();
-                }
                 return true;
             });
         },
@@ -189,8 +263,12 @@ var scene = {
         win: function (speed, time) {
             return scene.execRendered(function () {
                 console.group('scene.counter.win', speed, 'per', time, 'ms');
-                console.log('todo');
-                console.groupEnd();
+                chainImmediately(
+                    scene.animate.win(scene.sprite.counter.right),
+                    function () {
+                        console.groupEnd();
+                    }
+                );
                 return true;
             });
         }
@@ -199,8 +277,12 @@ var scene = {
         set: function (left, right, time) {
             return scene.execRendered(function () {
                 console.group('scene.like.set', left, right, 'in', time, 'ms');
-                scene.animate.showLike(5, scene.sprite.like.left, layout.like.left)();
-                console.groupEnd();
+                chainImmediately(
+                    scene.animate.showLike(5, scene.sprite.like.left, layout.like.left),
+                    function () {
+                        console.groupEnd();
+                    }
+                );
                 return true;
             });
         }
@@ -223,15 +305,54 @@ var scene = {
             };
             scene.tween.fourthRightCounter = tween;
             return joinDeferred(
-                startTweenDeferred(tween.dropCounter),
-                chainDeferred(delay(300), startTweenDeferred(tween.breakColon))
+                chainDeferred(startTweenDeferred(tween.dropCounter)),
+                chainDeferred(delay(300), startTweenDeferred(tween.breakColon)),
+                chainDeferred(delay(300), playSoundDeferred(snd.punch))
             );
+        },
+        updateCounters: function (sprite, valueFrom, valueTo, duration) {
+
+            function mkChain(animations, count, sprite) {
+                if (count != 0) {
+                    animations.push(scene.animate.updateCounter(sprite, count, duration));
+                }
+            }
+
+            var turns = scene.model.counter.turns(valueFrom, valueTo);
+            var digits = scene.model.counter.digits(valueTo);
+
+            var animations = [];
+            if (sprite.a0) {
+                mkChain(animations, turns.a0, sprite.a0);
+            }
+            mkChain(animations, turns.a, sprite.a);
+            mkChain(animations, turns.b, sprite.b);
+            mkChain(animations, turns.c, sprite.c);
+
+            return chainDeferred(joinDeferred.apply(this, animations), function () {
+                var res = new $.Deferred();
+                if (sprite.a0) {
+                    sprite.a0.tilePosition.y = scene.model.counter.tilePosition(digits.a0);
+                }
+                sprite.a.tilePosition.y = scene.model.counter.tilePosition(digits.a);
+                sprite.b.tilePosition.y = scene.model.counter.tilePosition(digits.b);
+                sprite.c.tilePosition.y = scene.model.counter.tilePosition(digits.c);
+                res.resolve();
+                return res.promise();
+            });
+        },
+        updateCounter: function (sprite, delta, duration) {
+            return function () {
+                var tween = mkTween('scene.updateCounter', sprite.tilePosition)
+                    .to({y: sprite.tilePosition.y + delta * layout.counter.size.h}, duration, Phaser.Easing.Linear.None);
+                return startTweenImmediately(tween);
+            };
         },
         incCounter: function (sprite, duration) {
             return function () {
                 var tween = mkTween('scene.incCounter', sprite.tilePosition)
                     .to({y: sprite.tilePosition.y + layout.counter.size.h}, duration, Phaser.Easing.Sinusoidal.InOut);
-                //playSoundImmediately(snd.tickUp);
+                playSoundImmediately(snd.tickUp);
                 return startTweenImmediately(tween);
             };
         },
@@ -239,11 +360,11 @@ var scene = {
             return function () {
                 var tween = mkTween('scene.decCounter', sprite.tilePosition)
                     .to({y: sprite.tilePosition.y - layout.counter.size.h}, duration, Phaser.Easing.Sinusoidal.InOut);
-                //playSoundImmediately(snd.tickDown);
+                playSoundImmediately(snd.tickDown);
                 return startTweenImmediately(tween);
             };
         },
-        showLike: function(value, sprite, _layout){
+        showLike: function (value, sprite, _layout) {
             var duration = 1500;
             return function () {
                 sprite.alpha = 0.5;
@@ -257,6 +378,19 @@ var scene = {
                 };
                 playSoundImmediately(snd.like);
                 return startTweenImmediately(tween.move, tween.show, tween.scale);
+            }
+        },
+        win: function (sprite) {
+            return function () {
+                var tween = [];
+                if (sprite.a0) {
+                    tween.push(mkTween('scene.animate.win.a0', sprite.a0).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
+                }
+                tween.push(mkTween('scene.animate.win.a', sprite.a).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
+                tween.push(mkTween('scene.animate.win.b', sprite.b).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
+                tween.push(mkTween('scene.animate.win.c', sprite.c).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
+                playSoundImmediately(snd.win);
+                return startTweenImmediately.apply(this, tween);
             }
         }
     }
