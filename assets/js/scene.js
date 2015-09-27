@@ -11,15 +11,22 @@ var scene = {
                 c: scene.mkTiledNumbers(layout.counter.left.c)
             },
             right: {
+                a0: scene.mkTiledNumbers(layout.counter.right.a0),
                 a: scene.mkTiledNumbers(layout.counter.right.a),
                 b: scene.mkTiledNumbers(layout.counter.right.b),
                 c: scene.mkTiledNumbers(layout.counter.right.c)
             }
         };
 
-        var colon = mkSprite(layout.colon.x, layout.colon.y, res.img.colon, layer.counters, {alpha: 0});
+        var colon = mkSprite(layout.colon.normal.x, layout.colon.normal.y, res.img.colon, layer.counters, {alpha: 0});
         var tween = mkTween('colon', colon).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+
+        _.assignValues(colon, layout.colon.broken);
+        counter.right.a0.loadTexture(res.img.numbers7);
+        counter.right.a0.tilePosition.y = layout.counter.right.a0.h * 11 - layout.counter.right.a0.h * 3;
+        scene.isRendered = true;
     },
+    isRendered: false,
     model: {
         counter: {
             left: 0,
@@ -36,6 +43,16 @@ var scene = {
             right: 0
         }
     },
+    execRendered: function (func) {
+        return function () {
+            if (scene.isRendered) {
+                return func();
+            } else {
+                console.warn('Scene is not rendered yet, so just ignoring this request.');
+                return false;
+            }
+        }
+    },
     counter: {
         /**
          * Установить значения счётчиков в `left`:`right` за время `time`
@@ -44,11 +61,12 @@ var scene = {
          * @param {number} time полное время в миллисекундах на установку значений
          */
         set: function (left, right, time) {
-            return function(){
+            return scene.execRendered(function () {
                 console.group('scene.counter.set', left, ':', right, 'in', time, 'ms');
                 console.log('todo');
                 console.groupEnd();
-            };
+                return true;
+            });
         },
         /**
          * Включает автоматическое изменение счётчиков с заданными скоростями для левого и правого счётчиков соответственно.
@@ -57,8 +75,8 @@ var scene = {
          * @param right скорость изменения правого счётчика за время `time`
          * @param time масштаб времени в миллисекундах для скорости изменения счётчиков
          */
-        auto: function(left, right, time){
-            return function(){
+        auto: function (left, right, time) {
+            return scene.execRendered(function () {
                 console.group('scene.counter.auto', left, ':', right, 'per', time, 'ms');
                 var model = scene.model.counter;
                 model.auto.left = left;
@@ -68,7 +86,8 @@ var scene = {
                     console.log('todo');
                 }
                 console.groupEnd();
-            };
+                return true;
+            });
         },
         /**
          * Запускает процедуру выигрыша правого участника со скоростью `speed` за время `time`
@@ -76,27 +95,30 @@ var scene = {
          * @param time масштаб времени в миллисекундах для скорости изменения счётчиков
          */
         win: function (speed, time) {
-            return function() {
+            return scene.execRendered(function () {
                 console.group('scene.counter.win', speed, 'per', time, 'ms');
                 console.log('todo');
                 console.groupEnd();
-            };
+                return true;
+            });
         }
     },
     like: {
-        set: function(left, right, time) {
-            return function(){
+        set: function (left, right, time) {
+            return scene.execRendered(function () {
                 console.group('scene.like.set', speed, 'per', time, 'ms');
                 console.log('todo');
                 console.groupEnd();
-            }
+                return true;
+            });
         }
     },
-    finishHim: function(){
-        return function(){
+    finishHim: function () {
+        return scene.execRendered(function () {
             console.group('scene.finishHim');
             console.log('todo');
             console.groupEnd();
-        }
+            return true;
+        });
     }
 };

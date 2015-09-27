@@ -4,12 +4,16 @@ var scenario = {
     },
     play: function () {
         if (scenario.current < scenario.stages.length) {
-            scenario.stages[scenario.current].apply(this);
-            scenario.current = scenario.current + 1;
+            if (scenario.stages[scenario.current].apply(this)) {
+                scenario.current = scenario.current + 1;
+            }
         }
     },
     stages: [
-        intro.play, // 0 : 0
+        intro.play,
+        //function(){
+        //    scene.render();
+        //},
         scene.counter.set(0, 5, 2500),
         scene.counter.set(10, 5, 2500),
         scene.counter.set(10, 15, 2000),

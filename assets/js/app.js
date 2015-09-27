@@ -21,11 +21,11 @@ function create() {
     app.input.onDown.add(scenario.play, this);
 
     layer = {
-        scene: mkLayer({z: 0}),
-        counters: mkLayer({z: 1}),
-        like: mkLayer({z: 2}),
-        fireworks: mkLayer({z: 3}),
-        intro: mkLayer({z: 4})
+        scene: mkLayer('scene', {z: 0}),
+        counters: mkLayer('counters', {z: 1}),
+        like: mkLayer('like', {z: 2}),
+        fireworks: mkLayer('fireworks', {z: 3}),
+        intro: mkLayer('intro', {z: 4})
     };
 
     snd = {
