@@ -24,8 +24,7 @@ var scenario = {
         scene.like.set(998, 235, 2000),
         scene.counter.set(10, 10, 1000),
         scene.counter.set(451, 555, 1000),
-        scene.counter.startAuto(0, -1, 3000),
-        scene.counter.updateAuto(0, -1, 1000),
+        scene.counter.startAuto(0, -1, 1000),
         scene.counter.updateAuto(0, -2, 500),
         //scene.counter.set(20, 15, 1000),
         //scene.counter.set(20, 65, 2000),
@@ -52,7 +51,7 @@ var scenario = {
         //scene.counter.set(450, 325, 2000),
         //scene.counter.auto(0, -1, 1000),
         //scene.counter.auto(0, -2, 1000),
-        //scene.finishHim,
+        scene.finishHim(),
         //scene.counter.auto(0, -3, 1000),
         //scene.counter.win(34, 1000),
         scene.counter.set(451, 7777, 10000)
