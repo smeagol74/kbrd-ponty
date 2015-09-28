@@ -103,10 +103,10 @@ var intro = {
         intro.img.opytVsMolodost.vs.destroy();
 
         var tween = {
-            left: mkTween('intro.grelka.left.out', intro.img.grelka.left).to({x: -1280}, 2000, Phaser.Easing.Bounce.Out),
-            right: mkTween('intro.grelka.right.out', intro.img.grelka.right).to({x: 1280}, 2000, Phaser.Easing.Bounce.Out),
-            grelkaLeft: mkTween('intro.grelka.grelka-left.out', intro.img.grelka.grelka.left).to({x: -1280}, 2000, Phaser.Easing.Bounce.Out),
-            grelkaRight: mkTween('intro.grelka.grelka-right.out', intro.img.grelka.grelka.right).to({x: 1280}, 2000, Phaser.Easing.Bounce.Out)
+            left: mkTween('intro.grelka.left.out', intro.img.grelka.left).to({x: -1280}, 4000, Phaser.Easing.Exponential.In),
+            right: mkTween('intro.grelka.right.out', intro.img.grelka.right).to({x: 1280}, 4000, Phaser.Easing.Exponential.In),
+            grelkaLeft: mkTween('intro.grelka.grelka-left.out', intro.img.grelka.grelka.left).to({x: -1280}, 4000, Phaser.Easing.Exponential.In),
+            grelkaRight: mkTween('intro.grelka.grelka-right.out', intro.img.grelka.grelka.right).to({x: 1280}, 4000, Phaser.Easing.Exponential.In)
         };
 
         return startTweenImmediately(tween.left, tween.right, tween.grelkaLeft, tween.grelkaRight);
