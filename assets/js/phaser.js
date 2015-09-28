@@ -50,3 +50,9 @@ function mkGraphics(x, y, layer) {
     var sprite = app.add.graphics(x, y, layer);
     return sprite;
 }
+
+function mkText(x, y, txt, layer, style) {
+    var text = app.add.text(x, y, txt, style, layer);
+    text.anchor.setTo(0.5, 0.5);
+    return text;
+}

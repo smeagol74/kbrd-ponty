@@ -82,6 +82,15 @@ var layout = {
                     x: 1,
                     y: 1
                 }
+            },
+            text: {
+                x: -75,
+                y: 258,
+                style: {
+                    font: "40px Arial",
+                    fill: "#ffffff",
+                    align: "center"
+                }
             }
         },
         right: {
@@ -103,6 +112,15 @@ var layout = {
                 scale: {
                     x: 1,
                     y: 1
+                }
+            },
+            text: {
+                x: 75,
+                y: 258,
+                style: {
+                    font: "40px Arial",
+                    fill: "#ffffff",
+                    align: "center"
                 }
             }
         }

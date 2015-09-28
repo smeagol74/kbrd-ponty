@@ -15,13 +15,13 @@ var scenario = {
         scene.counter.set(0, 5, 1000),
         scene.counter.set(10, 5, 1000),
         scene.counter.set(10, 15, 1000),
-        function(){
-            chainImmediately(
-                scene.animate.showLike(1, scene.sprite.like.left, layout.like.left),
-                scene.animate.showLike(1, scene.sprite.like.right, layout.like.right)
-            );
-            return true;
-        },
+        scene.like.showLeft(1),
+        scene.like.set(5, 0, 3000),
+        scene.like.set(234, 0, 5000),
+        scene.like.set(998, 0, 2000),
+        scene.like.showRight(1),
+        scene.like.set(998, 5, 3000),
+        scene.like.set(998, 235, 2000),
         scene.counter.set(10, 10, 1000),
         scene.counter.set(451, 555, 1000),
         scene.counter.startAuto(0, -1, 3000),

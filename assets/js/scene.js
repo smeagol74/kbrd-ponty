@@ -32,7 +32,11 @@ var scene = {
 
         scene.sprite.like = {
             left: mkSprite(layout.like.left.hidden.x, layout.like.left.hidden.y, res.img.like, layer.like, layout.like.left.hidden),
-            right: mkSprite(layout.like.right.hidden.x, layout.like.right.hidden.y, res.img.like, layer.like, layout.like.right.hidden)
+            right: mkSprite(layout.like.right.hidden.x, layout.like.right.hidden.y, res.img.like, layer.like, layout.like.right.hidden),
+            text: {
+                left: mkText(layout.like.left.text.x, layout.like.left.text.y, '', layer.like, layout.like.left.text.style),
+                right: mkText(layout.like.right.text.x, layout.like.right.text.y, '', layer.like, layout.like.right.text.style)
+            }
         };
 
         scene.isRendered = true;
@@ -290,9 +294,32 @@ var scene = {
     like: {
         set: function (left, right, time) {
             return scene.execRendered(function () {
-                console.group('scene.like.set', left, right, 'in', time, 'ms');
+                console.group('scene.like.set', left, ':', right, 'in', time, 'ms');
+                if (left > 0)
+                    scene.sprite.like.text.left.setText(left);
+                if (right > 0)
+                    scene.sprite.like.text.right.setText(right);
+                return true;
+            });
+        },
+        showLeft: function(value){
+            return scene.execRendered(function () {
+                console.group('scene.like.showLeft');
                 chainImmediately(
-                    scene.animate.showLike(5, scene.sprite.like.left, layout.like.left),
+                    scene.animate.showLike(value, scene.sprite.like.left, layout.like.left, scene.sprite.like.text.left),
+                    function () {
+                        console.groupEnd();
+                        return $.when();
+                    }
+                );
+                return true;
+            });
+        },
+        showRight: function(value){
+            return scene.execRendered(function () {
+                console.group('scene.like.showRight');
+                chainImmediately(
+                    scene.animate.showLike(value, scene.sprite.like.right, layout.like.right, scene.sprite.like.text.right),
                     function () {
                         console.groupEnd();
                         return $.when();
@@ -384,7 +411,7 @@ var scene = {
                 return startTweenImmediately(tween);
             };
         },
-        showLike: function (value, sprite, _layout) {
+        showLike: function (value, sprite, _layout, text) {
             var duration = 1500;
             return function () {
                 sprite.alpha = 0.5;
@@ -397,7 +424,11 @@ var scene = {
                         .to(_layout.visible.scale, duration, Phaser.Easing.Elastic.Out)
                 };
                 playSoundImmediately(snd.like);
-                return startTweenImmediately(tween.move, tween.show, tween.scale);
+                return startTweenImmediately(tween.move, tween.show, tween.scale)
+                    .then(function(){
+                        text.setText(value);
+                        return $.when();
+                    });
             }
         },
         win: function (sprite) {
