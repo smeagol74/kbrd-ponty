@@ -27,7 +27,7 @@ var intro = {
         };
         sprite.scale.x = 0;
         sprite.scale.y = 0;
-        var tween = mkTween('intro.championship.in', sprite.scale).to({x: 1, y: 1}, 5000, Phaser.Easing.Elastic.Out);
+        var tween = mkTween('intro.championship.in', sprite.scale).to({x: 1, y: 1}, 2500, Phaser.Easing.Elastic.Out);
         return startTweenImmediately(tween);
     },
     doudaVsEfimovitch: function () {
@@ -40,9 +40,9 @@ var intro = {
             vs: vs
         };
         var tween = {
-            left: mkTween('intro.doudaVsEfimovitch.left.in', left).to({x: -320}, 2000, Phaser.Easing.Bounce.Out),
-            right: mkTween('intro.doudaVsEfimovitch.right.in', right).to({x: 320}, 2000, Phaser.Easing.Bounce.Out),
-            vs: mkTween('intro.doudaVsEfimovitch.vs.in', vs).to({alpha: 1}, 3000, Phaser.Easing.Linear.None)
+            left: mkTween('intro.doudaVsEfimovitch.left.in', left).to({x: -320}, 1000, Phaser.Easing.Bounce.Out),
+            right: mkTween('intro.doudaVsEfimovitch.right.in', right).to({x: 320}, 1000, Phaser.Easing.Bounce.Out),
+            vs: mkTween('intro.doudaVsEfimovitch.vs.in', vs).to({alpha: 1}, 1000, Phaser.Easing.Linear.None)
         };
         return startTweenImmediately(tween.left, tween.right)
             .then(startTweenDeferred(tween.vs));
@@ -57,9 +57,9 @@ var intro = {
             vs: vs
         };
         var tween = {
-            left: mkTween('intro.opytVsMolodost.left.in', left).to({x: -320}, 2000, Phaser.Easing.Bounce.Out),
-            right: mkTween('intro.opytVsMolodost.right.in', right).to({x: 320}, 2000, Phaser.Easing.Bounce.Out),
-            vs: mkTween('intro.opytVsMolodost.vs.in', vs).to({alpha: 1}, 3000, Phaser.Easing.Linear.None)
+            left: mkTween('intro.opytVsMolodost.left.in', left).to({x: -320}, 1000, Phaser.Easing.Bounce.Out),
+            right: mkTween('intro.opytVsMolodost.right.in', right).to({x: 320}, 1000, Phaser.Easing.Bounce.Out),
+            vs: mkTween('intro.opytVsMolodost.vs.in', vs).to({alpha: 1}, 1000, Phaser.Easing.Linear.None)
         };
         return startTweenImmediately(tween.left, tween.right)
             .then(startTweenDeferred(tween.vs));
@@ -79,11 +79,11 @@ var intro = {
             grelka: grelka
         };
         var tween = {
-            left: mkTween('intro.grelka.left.in', left).to({x: -320}, 2000, Phaser.Easing.Bounce.Out),
-            right: mkTween('intro.grelka.right.in', right).to({x: 320}, 2000, Phaser.Easing.Bounce.Out),
-            vs: mkTween('intro.grelka.vs', vs).to({alpha: 1}, 3000, Phaser.Easing.Linear.None),
-            grelkaLeft: mkTween('intro.grelka.grelka-left.in', grelka.left).to({alpha: 1}, 3000, Phaser.Easing.Linear.None),
-            grelkaRight: mkTween('intro.grelka.grelka-right.in', grelka.right).to({alpha: 1}, 3000, Phaser.Easing.Linear.None)
+            left: mkTween('intro.grelka.left.in', left).to({x: -320}, 1000, Phaser.Easing.Bounce.Out),
+            right: mkTween('intro.grelka.right.in', right).to({x: 320}, 1000, Phaser.Easing.Bounce.Out),
+            vs: mkTween('intro.grelka.vs', vs).to({alpha: 1}, 1000, Phaser.Easing.Linear.None),
+            grelkaLeft: mkTween('intro.grelka.grelka-left.in', grelka.left).to({alpha: 1}, 1000, Phaser.Easing.Linear.None),
+            grelkaRight: mkTween('intro.grelka.grelka-right.in', grelka.right).to({alpha: 1}, 1000, Phaser.Easing.Linear.None)
         };
         return startTweenImmediately(tween.left, tween.right)
             .then(startTweenDeferred(tween.vs, tween.grelkaLeft, tween.grelkaRight));
@@ -104,10 +104,10 @@ var intro = {
         intro.img.opytVsMolodost.vs.destroy();
 
         var tween = {
-            left: mkTween('intro.grelka.left.out', intro.img.grelka.left).to({x: -1280}, 4000, Phaser.Easing.Exponential.In),
-            right: mkTween('intro.grelka.right.out', intro.img.grelka.right).to({x: 1280}, 4000, Phaser.Easing.Exponential.In),
-            grelkaLeft: mkTween('intro.grelka.grelka-left.out', intro.img.grelka.grelka.left).to({x: -1280}, 4000, Phaser.Easing.Exponential.In),
-            grelkaRight: mkTween('intro.grelka.grelka-right.out', intro.img.grelka.grelka.right).to({x: 1280}, 4000, Phaser.Easing.Exponential.In)
+            left: mkTween('intro.grelka.left.out', intro.img.grelka.left).to({x: -1280}, 1500, Phaser.Easing.Exponential.In),
+            right: mkTween('intro.grelka.right.out', intro.img.grelka.right).to({x: 1280}, 1500, Phaser.Easing.Exponential.In),
+            grelkaLeft: mkTween('intro.grelka.grelka-left.out', intro.img.grelka.grelka.left).to({x: -1280}, 1500, Phaser.Easing.Exponential.In),
+            grelkaRight: mkTween('intro.grelka.grelka-right.out', intro.img.grelka.grelka.right).to({x: 1280}, 1500, Phaser.Easing.Exponential.In)
         };
 
         return startTweenImmediately(tween.left, tween.right, tween.grelkaLeft, tween.grelkaRight);
