@@ -124,5 +124,15 @@ var layout = {
                 }
             }
         }
+    },
+    avatar: {
+        left: {
+            x: -86,
+            y: -25
+        },
+        right: {
+            x: 86,
+            y: -25
+        }
     }
 };
