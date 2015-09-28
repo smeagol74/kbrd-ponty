@@ -46,7 +46,8 @@ var scene = {
                 left: 0,
                 right: 0,
                 time: 0,
-                isActive: false
+                isActive: false,
+                promise: $.when()
             },
             tilePosition: function (value) {
                 return layout.counter.size.h * (11 + value);
@@ -138,6 +139,8 @@ var scene = {
 
             return scene.execRendered(function () {
                 console.group('scene.counter.set', left, ':', right, 'in', time, 'ms');
+                scene.model.counter.auto.isActive = false;
+
                 var chain = [];
                 if (right < 1000 || scene.model.counter.right >= 1000) {
                     chain.push(joinDeferred(
@@ -152,7 +155,7 @@ var scene = {
                         sounds.push(snd.tickDown);
                     }
                     if (sounds.length > 0) {
-                        chain.push(joinDeferred.apply(this, _(sounds).map(function(sound){
+                        chain.push(joinDeferred.apply(this, _(sounds).map(function (sound) {
                             return playSoundDeferred(sound);
                         })));
                     }
@@ -170,7 +173,7 @@ var scene = {
                         sounds.push(snd.tickDown);
                     }
                     if (sounds.length > 0) {
-                        chain.push(joinDeferred.apply(this, _(sounds).map(function(sound){
+                        chain.push(joinDeferred.apply(this, _(sounds).map(function (sound) {
                             return playSoundDeferred(sound);
                         })));
                     }
@@ -219,7 +222,7 @@ var scene = {
                             sounds.push(snd.tickDown);
                         }
                         if (sounds.length > 0) {
-                            chain.push(joinDeferred.apply(this, _(sounds).map(function(sound){
+                            chain.push(joinDeferred.apply(this, _(sounds).map(function (sound) {
                                 return playSoundDeferred(sound);
                             })));
                         }
@@ -241,17 +244,25 @@ var scene = {
          * @param right скорость изменения правого счётчика за время `time`
          * @param time масштаб времени в миллисекундах для скорости изменения счётчиков
          */
-        auto: function (left, right, time) {
+        startAuto: function (left, right, time) {
+            var model = scene.model.counter;
             return scene.execRendered(function () {
-                console.group('scene.counter.auto', left, ':', right, 'per', time, 'ms');
-                var model = scene.model.counter;
+                console.log('scene.counter.startAuto', left, ':', right, 'per', time, 'ms');
                 model.auto.left = left;
                 model.auto.right = right;
                 model.auto.time = time;
-                if (!model.auto.isActive) {
-                    console.log('todo');
-                }
-                console.groupEnd();
+                model.auto.isActive = true;
+                model.auto.promise.then(scene.animate.startAuto());
+                return true;
+            });
+        },
+        updateAuto: function(left, right, time) {
+            var model = scene.model.counter;
+            return scene.execRendered(function () {
+                console.log('scene.counter.updateAuto', left, ':', right, 'per', time, 'ms');
+                model.auto.left = left;
+                model.auto.right = right;
+                model.auto.time = time;
                 return true;
             });
         },
@@ -261,15 +272,17 @@ var scene = {
          * @param time масштаб времени в миллисекундах для скорости изменения счётчиков
          */
         win: function (speed, time) {
+            var model = scene.model.counter;
             return scene.execRendered(function () {
                 console.group('scene.counter.win', speed, 'per', time, 'ms');
-                chainImmediately(
+                model.auto.isActive = false;
+                model.auto.promise.then(chainDeferred(
                     scene.animate.win(scene.sprite.counter.right),
                     function () {
                         console.groupEnd();
                         return $.when();
                     }
-                );
+                ));
                 return true;
             });
         }
@@ -294,7 +307,7 @@ var scene = {
             console.group('scene.finishHim');
             chainImmediately(
                 scene.animate.finishHim(),
-                function(){
+                function () {
                     console.groupEnd();
                     return $.when();
                 }
@@ -400,7 +413,7 @@ var scene = {
                 return startTweenImmediately.apply(this, tween);
             }
         },
-        finishHim: function(){
+        finishHim: function () {
 
             function mkShade() {
                 var res = mkGraphics(0, 0, layer.fireworks);
@@ -411,7 +424,7 @@ var scene = {
                 return res;
             }
 
-            return function(){
+            return function () {
                 var sprite = {
                     shade: mkShade(),
                     text: mkSprite(0, 0, res.img.finishHim, layer.fireworks, {alpha: 0})
@@ -423,11 +436,38 @@ var scene = {
                         .to({alpha: 1}, 2000, Phaser.Easing.Linear.None, false, 0, 0, true)
                 };
                 playSoundImmediately(snd.finishHim);
-                return chainImmediately(startTweenDeferred(tween.shade, tween.text), function(){
+                return chainImmediately(startTweenDeferred(tween.shade, tween.text), function () {
                     sprite.shade.destroy();
                     sprite.text.destroy();
                     return $.when();
                 });
+            }
+        },
+        startAuto: function () {
+            var model = scene.model.counter;
+            if (model.auto.isActive) {
+                var prev = {
+                    left: model.left,
+                    right: model.right
+                };
+                model.left += model.auto.left;
+                model.right += model.auto.right;
+                return joinImmediately(
+                    scene.animate.updateCounters(scene.sprite.counter.left, prev.left, model.left, model.auto.time),
+                    scene.animate.updateCounters(scene.sprite.counter.right, prev.right, model.right, model.auto.time),
+                    function(){
+                        //if (model.auto.left > 0 || model.auto.right > 0) {
+                        //    playSoundImmediately(snd.tickUp);
+                        //}
+                        //if (model.auto.left < 0 || model.auto.right < 0) {
+                        //    playSoundImmediately(snd.tickDown);
+                        //}
+                        playSoundImmediately(snd.hitmarker);
+                        return $.when();
+                    }
+                ).then(scene.animate.startAuto);
+            } else {
+                return $.when();
             }
         }
     }

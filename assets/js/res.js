@@ -31,13 +31,14 @@ var res = {
     },
     snd: {
         finishHim: 'finish-him',
+        hitmarker: 'hitmarker',
         like: 'like',
         punch: 'punch',
         tickDown: 'tick-down',
         tickUp: 'tick-up',
         win: 'win',
         _all: function(){
-            return [res.snd.finishHim, res.snd.like, res.snd.punch, res.snd.tickUp, res.snd.tickDown, res.snd.win];
+            return [res.snd.finishHim, res.snd.hitmarker, res.snd.like, res.snd.punch, res.snd.tickUp, res.snd.tickDown, res.snd.win];
         }
     },
     key: {

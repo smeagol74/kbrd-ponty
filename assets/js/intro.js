@@ -17,6 +17,7 @@ var intro = {
             .then(intro.destroyIntro)
             .then(function () {
                 console.groupEnd();
+                return $.when();
             });
     },
     championship: function () {

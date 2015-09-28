@@ -23,8 +23,10 @@ var scenario = {
             return true;
         },
         scene.counter.set(10, 10, 1000),
-        scene.counter.set(451, 10, 1000),
-        scene.finishHim(),
+        scene.counter.set(451, 555, 1000),
+        scene.counter.startAuto(0, -1, 3000),
+        scene.counter.updateAuto(0, -1, 1000),
+        scene.counter.updateAuto(0, -2, 500),
         //scene.counter.set(20, 15, 1000),
         //scene.counter.set(20, 65, 2000),
         //scene.counter.set(70, 65, 1000),

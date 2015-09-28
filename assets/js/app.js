@@ -30,6 +30,7 @@ function create() {
 
     snd = {
         finishHim: app.add.sound(res.snd.finishHim),
+        hitmarker: app.add.sound(res.snd.hitmarker),
         like: app.add.sound(res.snd.like),
         punch: app.add.sound(res.snd.punch),
         tickDown: app.add.sound(res.snd.tickDown),
