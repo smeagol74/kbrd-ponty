@@ -12,10 +12,6 @@ var scenario = {
     },
     stages: [
         intro.play,
-        //function(){
-        //    scene.render();
-        //    return true;
-        //},
         scene.counter.set(0, 5, 1000),
         scene.counter.set(10, 5, 1000),
         scene.counter.set(10, 15, 1000),
@@ -28,6 +24,7 @@ var scenario = {
         },
         scene.counter.set(10, 10, 1000),
         scene.counter.set(451, 10, 1000),
+        scene.finishHim(),
         //scene.counter.set(20, 15, 1000),
         //scene.counter.set(20, 65, 2000),
         //scene.counter.set(70, 65, 1000),

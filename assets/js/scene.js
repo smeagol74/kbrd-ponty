@@ -267,6 +267,7 @@ var scene = {
                     scene.animate.win(scene.sprite.counter.right),
                     function () {
                         console.groupEnd();
+                        return $.when();
                     }
                 );
                 return true;
@@ -281,6 +282,7 @@ var scene = {
                     scene.animate.showLike(5, scene.sprite.like.left, layout.like.left),
                     function () {
                         console.groupEnd();
+                        return $.when();
                     }
                 );
                 return true;
@@ -290,8 +292,13 @@ var scene = {
     finishHim: function () {
         return scene.execRendered(function () {
             console.group('scene.finishHim');
-            console.log('todo');
-            console.groupEnd();
+            chainImmediately(
+                scene.animate.finishHim(),
+                function(){
+                    console.groupEnd();
+                    return $.when();
+                }
+            );
             return true;
         });
     },
@@ -391,6 +398,36 @@ var scene = {
                 tween.push(mkTween('scene.animate.win.c', sprite.c).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
                 playSoundImmediately(snd.win);
                 return startTweenImmediately.apply(this, tween);
+            }
+        },
+        finishHim: function(){
+
+            function mkShade() {
+                var res = mkGraphics(0, 0, layer.fireworks);
+                res.beginFill(0x000000, 0.5);
+                res.drawRect(-app.world.centerX, -app.world.centerY, app.world.width, app.world.height);
+                res.endFill();
+                res.alpha = 0;
+                return res;
+            }
+
+            return function(){
+                var sprite = {
+                    shade: mkShade(),
+                    text: mkSprite(0, 0, res.img.finishHim, layer.fireworks, {alpha: 0})
+                };
+                var tween = {
+                    shade: mkTween('scene.animate.finishHim.shade', sprite.shade)
+                        .to({alpha: 1}, 2000, Phaser.Easing.Linear.None, false, 0, 0, true),
+                    text: mkTween('scene.animate.finishHim.text', sprite.text)
+                        .to({alpha: 1}, 2000, Phaser.Easing.Linear.None, false, 0, 0, true)
+                };
+                playSoundImmediately(snd.finishHim);
+                return chainImmediately(startTweenDeferred(tween.shade, tween.text), function(){
+                    sprite.shade.destroy();
+                    sprite.text.destroy();
+                    return $.when();
+                });
             }
         }
     }

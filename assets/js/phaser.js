@@ -45,3 +45,8 @@ function mkTween(name, target) {
     tween.name = name;
     return tween;
 }
+
+function mkGraphics(x, y, layer) {
+    var sprite = app.add.graphics(x, y, layer);
+    return sprite;
+}
