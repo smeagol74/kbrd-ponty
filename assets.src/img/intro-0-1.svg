@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="intro-0.svg"
+   sodipodi:docname="intro-0-1.svg"
    inkscape:export-filename="/home/smeagol/data/prj/customers/kbrd/ponty/assets/img/intro-0.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
@@ -28,9 +28,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.54296765"
-     inkscape:cx="452.89918"
-     inkscape:cy="406.64882"
+     inkscape:zoom="1.2005315"
+     inkscape:cx="629.87178"
+     inkscape:cy="340.72011"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -50,7 +50,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -78,38 +78,53 @@
          x="497.96875"
          y="402.23138">AKADEM-2015</tspan></text>
     <g
-       id="g3921"
-       transform="translate(16.835226,0)">
-      <text
-         sodipodi:linespacing="125%"
-         id="text3137"
-         y="694.97656"
-         x="621.672"
-         style="font-size:95.53657532px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:#008000;stroke-width:6;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;font-family:Bitstream Vera Sans"
-         xml:space="preserve"><tspan
-           y="694.97656"
-           x="621.672"
-           id="tspan3139"
-           sodipodi:role="line">WORLDWIDE</tspan><tspan
-           id="tspan3145"
-           y="814.39728"
-           x="621.672"
-           sodipodi:role="line">SNOBIZM CHAMPIONSHIP</tspan></text>
-      <text
-         xml:space="preserve"
-         style="font-size:95.53657532px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-         x="621.672"
-         y="694.97656"
-         id="text3915"
-         sodipodi:linespacing="125%"><tspan
-           sodipodi:role="line"
-           id="tspan3917"
-           x="621.672"
-           y="694.97656">WORLDWIDE</tspan><tspan
-           sodipodi:role="line"
-           x="621.672"
-           y="814.39728"
-           id="tspan3919">SNOBIZM CHAMPIONSHIP</tspan></text>
+       id="g3125"
+       transform="matrix(1.5169014,0,0,1.6801036,-330.57575,-593.52815)">
+      <g
+         id="g3114">
+        <g
+           id="g3921"
+           transform="translate(16.835226,0)">
+          <text
+             sodipodi:linespacing="125%"
+             id="text3137"
+             y="694.97656"
+             x="621.672"
+             style="font-size:95.53657532px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:#008000;stroke-width:6;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;font-family:Bitstream Vera Sans"
+             xml:space="preserve"><tspan
+               y="694.97656"
+               x="621.672"
+               id="tspan3139"
+               sodipodi:role="line">WORLDWIDE</tspan><tspan
+               id="tspan3145"
+               y="814.39728"
+               x="621.672"
+               sodipodi:role="line">SNOBIZM</tspan><tspan
+               y="933.81799"
+               x="621.672"
+               sodipodi:role="line"
+               id="tspan3112">CHAMPIONSHIP</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:95.53657532px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+             x="621.672"
+             y="694.97656"
+             id="text3915"
+             sodipodi:linespacing="125%"><tspan
+               sodipodi:role="line"
+               id="tspan3917"
+               x="621.672"
+               y="694.97656">WORLDWIDE</tspan><tspan
+               sodipodi:role="line"
+               x="621.672"
+               y="814.39728"
+               id="tspan3919">SNOBIZM</tspan><tspan
+               sodipodi:role="line"
+               x="621.672"
+               y="933.81799"
+               id="tspan3110">CHAMPIONSHIP</tspan></text>
+        </g>
+      </g>
     </g>
   </g>
 </svg>

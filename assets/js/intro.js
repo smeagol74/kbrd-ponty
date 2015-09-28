@@ -68,25 +68,24 @@ var intro = {
         var left = mkSprite(-1280, 0, res.img.intro3.left, layer.intro);
         var right = mkSprite(1280, 0, res.img.intro3.right, layer.intro);
         var grelka = {
-            left: mkSprite(0, 0, res.img.intro3Grelka.left, layer.intro, {alpha: 0}),
-            right: mkSprite(0, 0, res.img.intro3Grelka.right, layer.intro, {alpha: 0})
+            left: mkSprite(0, 0, res.img.intro3Grelka.left, layer.intro, {alpha: 0, scale: {x: 5, y: 5}}),
+            right: mkSprite(0, 0, res.img.intro3Grelka.right, layer.intro, {alpha: 0, scale: {x: 5, y: 5}})
         };
-        var vs = intro.mkVs();
         intro.img.grelka = {
             left: left,
             right: right,
-            vs: vs,
             grelka: grelka
         };
         var tween = {
             left: mkTween('intro.grelka.left.in', left).to({x: -320}, 1000, Phaser.Easing.Bounce.Out),
             right: mkTween('intro.grelka.right.in', right).to({x: 320}, 1000, Phaser.Easing.Bounce.Out),
-            vs: mkTween('intro.grelka.vs', vs).to({alpha: 1}, 1000, Phaser.Easing.Linear.None),
-            grelkaLeft: mkTween('intro.grelka.grelka-left.in', grelka.left).to({alpha: 1}, 1000, Phaser.Easing.Linear.None),
-            grelkaRight: mkTween('intro.grelka.grelka-right.in', grelka.right).to({alpha: 1}, 1000, Phaser.Easing.Linear.None)
+            grelkaLeftScale: mkTween('intro.grelka.grelka-left.scale.in', grelka.left.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out),
+            grelkaRightScale: mkTween('intro.grelka.grelka-right.scale.in', grelka.right.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out),
+            grelkaLeftAlpha: mkTween('intro.grelka.grelka-left.alpha.in', grelka.left).to({alpha: 1}, 1000, Phaser.Easing.Linear.None),
+            grelkaRightAlpha: mkTween('intro.grelka.grelka-right.alpha.in', grelka.right).to({alpha: 1}, 1000, Phaser.Easing.Linear.None)
         };
         return startTweenImmediately(tween.left, tween.right)
-            .then(startTweenDeferred(tween.vs, tween.grelkaLeft, tween.grelkaRight));
+            .then(startTweenDeferred(tween.grelkaLeftScale, tween.grelkaRightScale, tween.grelkaLeftAlpha, tween.grelkaRightAlpha));
     },
     mkVs: function () {
         return mkSprite(0, 200, res.img.vs, layer.intro, {alpha: 0, scale: {x: 0.3, y: 0.3}});
@@ -94,7 +93,6 @@ var intro = {
     scene: function () {
         scene.render();
 
-        intro.img.grelka.vs.destroy();
         intro.img.championship.intro.destroy();
         intro.img.doudaVsEfimovitch.left.destroy();
         intro.img.doudaVsEfimovitch.right.destroy();
