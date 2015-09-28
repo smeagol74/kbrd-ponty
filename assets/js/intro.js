@@ -104,10 +104,18 @@ var intro = {
         intro.img.opytVsMolodost.vs.destroy();
 
         var tween = {
-            left: mkTween('intro.grelka.left.out', intro.img.grelka.left).to({x: -1280}, 1500, Phaser.Easing.Exponential.In),
-            right: mkTween('intro.grelka.right.out', intro.img.grelka.right).to({x: 1280}, 1500, Phaser.Easing.Exponential.In),
-            grelkaLeft: mkTween('intro.grelka.grelka-left.out', intro.img.grelka.grelka.left).to({x: -1280}, 1500, Phaser.Easing.Exponential.In),
-            grelkaRight: mkTween('intro.grelka.grelka-right.out', intro.img.grelka.grelka.right).to({x: 1280}, 1500, Phaser.Easing.Exponential.In)
+            left: mkTween('intro.grelka.left.out', intro.img.grelka.left)
+                .to({x: -370}, 500, Phaser.Easing.Bounce.Out)
+                .to({x: -1280}, 1000, Phaser.Easing.Exponential.Out),
+            right: mkTween('intro.grelka.right.out', intro.img.grelka.right)
+                .to({x: 370}, 500, Phaser.Easing.Bounce.Out)
+                .to({x: 1280}, 1000, Phaser.Easing.Exponential.Out),
+            grelkaLeft: mkTween('intro.grelka.grelka-left.out', intro.img.grelka.grelka.left)
+                .to({x: -50}, 500, Phaser.Easing.Bounce.Out)
+                .to({x: -1280}, 1000, Phaser.Easing.Exponential.Out),
+            grelkaRight: mkTween('intro.grelka.grelka-right.out', intro.img.grelka.grelka.right)
+                .to({x: 50}, 500, Phaser.Easing.Bounce.Out)
+                .to({x: 1280}, 1000, Phaser.Easing.Exponential.Out)
         };
 
         return startTweenImmediately(tween.left, tween.right, tween.grelkaLeft, tween.grelkaRight);
