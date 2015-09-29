@@ -67,28 +67,30 @@ var intro = {
     grelka: function () {
         var left = mkSprite(-1280, 0, res.img.intro3.left, layer.intro);
         var right = mkSprite(1280, 0, res.img.intro3.right, layer.intro);
+        var fireball = mkSprite(0, 0, res.img.intro3.fireball, layer.intro, {alpha: 0});
         var grelka = {
-            left: mkSprite(0, 0, res.img.intro3Grelka.left, layer.intro, {alpha: 0, scale: {x: 5, y: 5}}),
-            right: mkSprite(0, 0, res.img.intro3Grelka.right, layer.intro, {alpha: 0, scale: {x: 5, y: 5}})
+            left: mkSprite(0, 0, res.img.intro3.grelka.left, layer.intro, {alpha: 0}),
+            right: mkSprite(0, 0, res.img.intro3.grelka.right, layer.intro, {alpha: 0}),
+            whole: mkSprite(0, 0, res.img.intro3.grelka.whole, layer.intro, {alpha: 0, scale: {x: 5, y: 5}})
         };
         intro.img.grelka = {
             left: left,
             right: right,
-            grelka: grelka
+            grelka: grelka,
+            fireball: fireball
         };
         var tween = {
             left: mkTween('intro.grelka.left.in', left).to({x: -320}, 1000, Phaser.Easing.Bounce.Out),
             right: mkTween('intro.grelka.right.in', right).to({x: 320}, 1000, Phaser.Easing.Bounce.Out),
-            grelkaLeftScale: mkTween('intro.grelka.grelka-left.scale.in', grelka.left.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out),
-            grelkaRightScale: mkTween('intro.grelka.grelka-right.scale.in', grelka.right.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out),
-            grelkaLeftAlpha: mkTween('intro.grelka.grelka-left.alpha.in', grelka.left).to({alpha: 1}, 1000, Phaser.Easing.Linear.None),
-            grelkaRightAlpha: mkTween('intro.grelka.grelka-right.alpha.in', grelka.right).to({alpha: 1}, 1000, Phaser.Easing.Linear.None)
+            fireball: mkTween('intro.grelka.fireball.in', fireball).to({alpha: 1}, 1000, Phaser.Easing.Linear.None),
+            grelkaScale: mkTween('intro.grelka.grelka.scale.in', grelka.whole.scale).to({x: 1, y: 1}, 1000, Phaser.Easing.Elastic.Out),
+            grelkaAlpha: mkTween('intro.grelka.grelka.alpha.in', grelka.whole).to({alpha: 1}, 1000, Phaser.Easing.Linear.None)
         };
         return startTweenImmediately(tween.left, tween.right)
-            .then(startTweenDeferred(tween.grelkaLeftScale, tween.grelkaRightScale, tween.grelkaLeftAlpha, tween.grelkaRightAlpha));
+            .then(startTweenDeferred(tween.fireball, tween.grelkaScale, tween.grelkaAlpha));
     },
     mkVs: function () {
-        return mkSprite(0, 200, res.img.vs, layer.intro, {alpha: 0, scale: {x: 0.3, y: 0.3}});
+        return mkSprite(0, 0, res.img.vs, layer.intro, {alpha: 0});
     },
     scene: function () {
         scene.render();
@@ -100,28 +102,41 @@ var intro = {
         intro.img.opytVsMolodost.left.destroy();
         intro.img.opytVsMolodost.right.destroy();
         intro.img.opytVsMolodost.vs.destroy();
+        intro.img.grelka.grelka.whole.destroy();
+
+        var tweenSwitch = {
+           left: mkTween('intro.grelka.grelka-left.show', intro.img.grelka.grelka.left)
+               .to({alpha: 1}, 10, Phaser.Easing.Linear.None),
+           right: mkTween('intro.grelka.grelka-right.show', intro.img.grelka.grelka.right)
+               .to({alpha: 1}, 10, Phaser.Easing.Linear.None),
+           whole: mkTween('intro.grelka.grelka-whole.show', intro.img.grelka.grelka.whole)
+               .to({alpha: 0}, 10, Phaser.Easing.Linear.None)
+        };
 
         var tween = {
             left: mkTween('intro.grelka.left.out', intro.img.grelka.left)
-                .to({x: -370}, 500, Phaser.Easing.Bounce.Out)
-                .to({x: -1280}, 1000, Phaser.Easing.Exponential.Out),
+                .to({x: -1280}, 500, Phaser.Easing.Exponential.Out, false, 1000),
             right: mkTween('intro.grelka.right.out', intro.img.grelka.right)
-                .to({x: 370}, 500, Phaser.Easing.Bounce.Out)
-                .to({x: 1280}, 1000, Phaser.Easing.Exponential.Out),
+                .to({x: 1280}, 500, Phaser.Easing.Exponential.Out, false, 1000),
+            fireball: mkTween('intro.grelka.fireball.out', intro.img.grelka.fireball)
+                .to({alpha: 0}, 100, Phaser.Easing.Linear.None, false, 1000),
             grelkaLeft: mkTween('intro.grelka.grelka-left.out', intro.img.grelka.grelka.left)
-                .to({x: -50}, 500, Phaser.Easing.Bounce.Out)
-                .to({x: -1280}, 1000, Phaser.Easing.Exponential.Out),
+                .to({x: -50}, 1000, Phaser.Easing.Bounce.Out)
+                .to({x: -1280}, 500, Phaser.Easing.Exponential.Out),
             grelkaRight: mkTween('intro.grelka.grelka-right.out', intro.img.grelka.grelka.right)
-                .to({x: 50}, 500, Phaser.Easing.Bounce.Out)
-                .to({x: 1280}, 1000, Phaser.Easing.Exponential.Out)
+                .to({x: 50}, 1000, Phaser.Easing.Bounce.Out)
+                .to({x: 1280}, 500, Phaser.Easing.Exponential.Out)
         };
 
-        return startTweenImmediately(tween.left, tween.right, tween.grelkaLeft, tween.grelkaRight);
+        return startTweenImmediately(tweenSwitch.left, tweenSwitch.right, tweenSwitch.whole).then(
+            startTweenDeferred(tween.left, tween.right, tween.fireball, tween.grelkaLeft, tween.grelkaRight)
+        );
     },
     destroyIntro: function(){
         intro.img.grelka.left.destroy();
         intro.img.grelka.right.destroy();
         intro.img.grelka.grelka.left.destroy();
         intro.img.grelka.grelka.right.destroy();
+        intro.img.grelka.fireball.destroy();
     }
 };

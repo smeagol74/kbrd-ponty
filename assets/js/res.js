@@ -13,11 +13,13 @@ var res = {
         },
         intro3: {
             left: 'intro-3.left',
-            right: 'intro-3.right'
-        },
-        intro3Grelka: {
-            left: 'intro-3-grelka.left',
-            right: 'intro-3-grelka.right'
+            right: 'intro-3.right',
+            grelka: {
+                left: 'intro-3.grelka.left',
+                right: 'intro-3.grelka.right',
+                whole: 'intro-3.grelka'
+            },
+            fireball: 'intro-3.fireball'
         },
         like: 'like',
         numbers: 'numbers',
@@ -26,7 +28,7 @@ var res = {
         seven: 'seven',
         vs: 'vs',
         _all: function(){
-            return [res.img.colon, res.img.finishHim, res.img.intro0, res.img.intro1.left, res.img.intro1.right, res.img.intro2.left, res.img.intro2.right, res.img.intro3.left, res.img.intro3.right, res.img.intro3Grelka.left, res.img.intro3Grelka.right, res.img.like, res.img.numbers, res.img.numbers7, res.img.scene, res.img.vs];
+            return [res.img.colon, res.img.finishHim, res.img.intro0, res.img.intro1.left, res.img.intro1.right, res.img.intro2.left, res.img.intro2.right, res.img.intro3.left, res.img.intro3.right, res.img.intro3.grelka.left, res.img.intro3.grelka.right, res.img.intro3.grelka.whole, res.img.intro3.fireball, res.img.like, res.img.numbers, res.img.numbers7, res.img.scene, res.img.vs];
         }
     },
     snd: {
