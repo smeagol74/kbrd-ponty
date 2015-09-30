@@ -314,11 +314,11 @@ var scene = {
                 return true;
             });
         },
-        showLeft: function(value){
+        showLeft: function(value, time){
             return scene.execRendered(function () {
                 console.group('scene.like.showLeft');
                 chainImmediately(
-                    scene.animate.showLike(value, scene.sprite.like.left, layout.like.left, scene.sprite.like.text.left),
+                    scene.animate.showLike(value, time, scene.sprite.like.left, layout.like.left, scene.sprite.like.text.left),
                     function () {
                         console.groupEnd();
                         return $.when();
@@ -436,7 +436,15 @@ var scene = {
                 return startTweenImmediately(tween);
             };
         },
-        showLike: function (value, sprite, _layout, text) {
+        showLike: function (value, time, sprite, _layout, text) {
+
+            function setText(v) {
+                return function(){
+                    text.setText(v);
+                    return $.when();
+                }
+            }
+
             var duration = 1500;
             return function () {
                 sprite.alpha = 0.5;
@@ -449,11 +457,16 @@ var scene = {
                         .to(_layout.visible.scale, duration, Phaser.Easing.Elastic.Out)
                 };
                 playSoundImmediately(snd.like);
-                return startTweenImmediately(tween.move, tween.show, tween.scale)
-                    .then(function(){
-                        text.setText(value);
-                        return $.when();
-                    });
+                var chain = [startTweenDeferred(tween.move, tween.show, tween.scale)];
+                var val = 0;
+                while(val < value) {
+                    val += Math.ceil(Math.random() * (value - val) / 10);
+                    if (val > value)
+                        val = value;
+                    chain.push(delay(100));
+                    chain.push(setText(val));
+                }
+                return chainImmediately.apply(this, chain);
             }
         },
         win: function (sprite) {
