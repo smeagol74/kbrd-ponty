@@ -31,8 +31,8 @@ var intro = {
         return startTweenImmediately(tween);
     },
     doudaVsEfimovitch: function () {
-        var left = mkSprite(-1280, 0, res.img.intro1.left, layer.intro);
-        var right = mkSprite(1280, 0, res.img.intro1.right, layer.intro);
+        var left = mkSprite(-1280, 0, res.img.intro1, layer.intro, 0);
+        var right = mkSprite(1280, 0, res.img.intro1, layer.intro, 1);
         var vs = intro.mkVs();
         intro.img.doudaVsEfimovitch = {
             left: left,
@@ -48,8 +48,8 @@ var intro = {
             .then(startTweenDeferred(tween.vs));
     },
     opytVsMolodost: function () {
-        var left = mkSprite(-1280, 0, res.img.intro2.left, layer.intro);
-        var right = mkSprite(1280, 0, res.img.intro2.right, layer.intro);
+        var left = mkSprite(-1280, 0, res.img.intro2, layer.intro, 0);
+        var right = mkSprite(1280, 0, res.img.intro2, layer.intro, 1);
         var vs = intro.mkVs();
         intro.img.opytVsMolodost = {
             left: left,
@@ -65,8 +65,8 @@ var intro = {
             .then(startTweenDeferred(tween.vs));
     },
     grelka: function () {
-        var left = mkSprite(-1280, 0, res.img.intro3.left, layer.intro);
-        var right = mkSprite(1280, 0, res.img.intro3.right, layer.intro);
+        var left = mkSprite(-1280, 0, res.img.intro3.bg, layer.intro, 0);
+        var right = mkSprite(1280, 0, res.img.intro3.bg, layer.intro, 1);
         var fireball = mkSprite(0, 0, res.img.intro3.fireball, layer.intro, {alpha: 0});
         var grelka = {
             left: mkSprite(0, 0, res.img.intro3.grelka.left, layer.intro, {alpha: 0}),

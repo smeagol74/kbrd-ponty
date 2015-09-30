@@ -11,6 +11,12 @@ var scene = {
     },
     render: function () {
         scene.sprite.bg = mkSprite(0, 0, res.img.scene, layer.scene);
+        scene.sprite.avatar = {
+            left0: mkSprite(0, 0, res.img.avatar.left0, layer.scene),
+            left1: mkSprite(0, 0, res.img.avatar.left1, layer.scene, {alpha: 0}),
+            right0: mkSprite(0, 0, res.img.avatar.right0, layer.scene)
+        };
+        scene.sprite.placeholder = mkSprite(0, 0, res.img.placeholder, layer.scene);
         scene.sprite.counter = {
             left: {
                 a: scene.mkTiledNumbers(layout.counter.left.a),
@@ -31,7 +37,7 @@ var scene = {
         scene.tween.colon = mkTween('scene.colon', scene.sprite.colon).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 0, 10000, true);
 
         scene.sprite.like = {
-            left: mkSprite(layout.like.left.hidden.x, layout.like.left.hidden.y, res.img.like, layer.like, layout.like.left.hidden),
+            left: mkSprite(layout.like.left.hidden.x, layout.like.left.hidden.y, res.img.like.left, layer.like, layout.like.left.hidden),
             right: mkSprite(layout.like.right.hidden.x, layout.like.right.hidden.y, res.img.like, layer.like, layout.like.right.hidden),
             text: {
                 left: mkText(layout.like.left.text.x, layout.like.left.text.y, '', layer.like, layout.like.left.text.style),
@@ -235,6 +241,12 @@ var scene = {
                 chain.push(function () {
                     console.groupEnd();
                 });
+                if (scene.model.counter.left != left) {
+                    scene.animate.tickLeftAvatar();
+                }
+                if (scene.model.counter.right != right) {
+                    scene.animate.tickRightAvatar();
+                }
                 chainImmediately.apply(this, chain);
                 scene.model.counter.left = left;
                 scene.model.counter.right = right;
@@ -342,6 +354,19 @@ var scene = {
             return true;
         });
     },
+    changeLeftAvatar: function(){
+        return scene.execRendered(function () {
+            console.group('scene.changeLeftAvatar');
+            chainImmediately(
+                scene.animate.changeLeftAvatar(),
+                function () {
+                    console.groupEnd();
+                    return $.when();
+                }
+            );
+            return true;
+        });
+    },
     animate: {
         dropFourthRightCounter: function () {
             var tween = {
@@ -435,11 +460,13 @@ var scene = {
             return function () {
                 var tween = [];
                 if (sprite.a0) {
-                    tween.push(mkTween('scene.animate.win.a0', sprite.a0).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
+                    tween.push(mkTween('scene.animate.win.a0', sprite.a0).to({alpha: 0.4}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
                 }
-                tween.push(mkTween('scene.animate.win.a', sprite.a).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
-                tween.push(mkTween('scene.animate.win.b', sprite.b).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
-                tween.push(mkTween('scene.animate.win.c', sprite.c).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
+                tween.push(mkTween('scene.animate.win.a', sprite.a).to({alpha: 0.4}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
+                tween.push(mkTween('scene.animate.win.b', sprite.b).to({alpha: 0.4}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
+                tween.push(mkTween('scene.animate.win.c', sprite.c).to({alpha: 0.4}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
+                //tween.push(mkTween('scene.animate.win.avatar', scene.sprite.avatar.right0).to({alpha: 0.4}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
+                tween.push(mkTween('scene.animate.win.avatar.scale', scene.sprite.avatar.right0.scale).to({x: 1.05, y: 1.05}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
                 playSoundImmediately(snd.win);
                 return startTweenImmediately.apply(this, tween);
             }
@@ -500,6 +527,40 @@ var scene = {
             } else {
                 return $.when();
             }
+        },
+        changeLeftAvatar: function(){
+            var sprite = {
+                alert: mkSprite(0, 0, res.img.avatar.leftAlert, layer.fireworks, {alpha: 0})
+            };
+            var tween = {
+                showAlert: mkTween('scene.animation.changeLeftAvatar.showAlert', sprite.alert)
+                    .to({alpha: 1}, 1000, Phaser.Easing.Linear.None),
+                hideOld: mkTween('scene.animation.changeLeftAvatar.hideOld', scene.sprite.avatar.left0)
+                    .to({alpha: 0}, 1000, Phaser.Easing.Linear.None),
+                showNew: mkTween('scene.animation.changeLeftAvatar.showNew', scene.sprite.avatar.left1)
+                    .to({alpha: 1}, 1000, Phaser.Easing.Linear.None),
+                hideAlert: mkTween('scene.animation.changeLeftAvatar.hideAlert', sprite.alert)
+                    .to({alpha: 0}, 1000, Phaser.Easing.Linear.None)
+            };
+            return chainDeferred(
+                startTweenDeferred(tween.showAlert),
+                startTweenDeferred(tween.hideOld, tween.showNew),
+                delay(1000),
+                startTweenDeferred(tween.hideAlert)
+            );
+        },
+        tickLeftAvatar: function(){
+            var sprite = (scene.sprite.avatar.left0.alpha > 0)?scene.sprite.avatar.left0:scene.sprite.avatar.left1;
+            var tween = mkTween('scene.animation.tickLeftAvatar', sprite.scale)
+                .to({x: 1.05, y: 1.05}, 500, Phaser.Easing.Linear.None)
+                .to({x: 1, y: 1}, 500, Phaser.Easing.Bounce.Out);
+            startTweenImmediately(tween);
+        },
+        tickRightAvatar: function(){
+            var tween = mkTween('scene.animation.tickRightAvatar', scene.sprite.avatar.right0.scale)
+                .to({x: 1.05, y: 1.05}, 500, Phaser.Easing.Linear.None)
+                .to({x: 1, y: 1}, 500, Phaser.Easing.Bounce.Out);
+            startTweenImmediately(tween);
         }
     }
 };

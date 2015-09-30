@@ -1,24 +1,28 @@
 var app = new Phaser.Game("100", "100", Phaser.AUTO, '', {preload: preload, create: create});
 
-WebFontConfig = {
-    active: function () {
-        app.time.events.add(Phaser.Timer.Second, createText, this);
-    },
-    custom: {
-        families: ['Eagle Lake', 'Creepster', 'Trade Winds', 'Nosifer'],
-        urls: ['assets/font/fonts.css']
-    }
-};
+//WebFontConfig = {
+//    active: function () {
+//        app.time.events.add(Phaser.Timer.Second, createText, this);
+//    },
+//    custom: {
+//        families: ['Eagle Lake', 'Creepster', 'Trade Winds', 'Nosifer'],
+//        urls: ['assets/font/fonts.css']
+//    }
+//};
 
 var snd = {};
 var key = {};
 var layer = {};
 
 function preload() {
-    app.load.script('webfont', 'assets/lib/webfont.js');
+    //app.load.script('webfont', 'assets/lib/webfont.js');
 
     _(res.img._all()).each(function (name) {
         app.load.image(name, 'assets/img/1280x720/' + name + '.png');
+    });
+
+    _(res.img.leftRight()).each(function(name) {
+        app.load.spritesheet(name, 'assets/img/1280x720/' + name + '.png', 640, 720);
     });
 
     _(res.snd._all()).each(function (name) {

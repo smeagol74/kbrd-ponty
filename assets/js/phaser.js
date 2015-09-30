@@ -26,8 +26,12 @@ function mkLayer(name, props) {
     return mkGroup(app.world, name, props);
 }
 
-function mkSprite(x, y, image, layer, props) {
-    var sprite = app.add.sprite(x, y, image, null, layer);
+function mkSprite(x, y, image, layer, props, frame) {
+    if (!_.isObject(props)) {
+        frame = props;
+        props = null;
+    }
+    var sprite = app.add.sprite(x, y, image, frame, layer);
     sprite.anchor.setTo(0.5, 0.5);
     _.assignValues(sprite, props);
     return sprite;

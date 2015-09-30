@@ -1,19 +1,18 @@
 var res = {
     img: {
         colon: 'colon',
+        avatar: {
+            left0: 'avatar.left.0',
+            right0: 'avatar.right.0',
+            left1: 'avatar.left.1',
+            leftAlert: 'avatar.left.alert'
+        },
         finishHim: 'finish-him',
         intro0: 'intro-0',
-        intro1: {
-            left: 'intro-1.left',
-            right: 'intro-1.right'
-        },
-        intro2: {
-            left: 'intro-2.left',
-            right: 'intro-2.right'
-        },
+        intro1: 'intro-1',
+        intro2: 'intro-2',
         intro3: {
-            left: 'intro-3.left',
-            right: 'intro-3.right',
+            bg: 'intro-3',
             grelka: {
                 left: 'intro-3.grelka.left',
                 right: 'intro-3.grelka.right',
@@ -21,14 +20,21 @@ var res = {
             },
             fireball: 'intro-3.fireball'
         },
-        like: 'like',
+        like: {
+            left: 'like.left',
+            right: 'like.right'
+        },
         numbers: 'numbers',
         numbers7: 'numbers7',
         scene: 'scene',
+        placeholder: 'placeholder',
         seven: 'seven',
         vs: 'vs',
         _all: function(){
-            return [res.img.colon, res.img.finishHim, res.img.intro0, res.img.intro1.left, res.img.intro1.right, res.img.intro2.left, res.img.intro2.right, res.img.intro3.left, res.img.intro3.right, res.img.intro3.grelka.left, res.img.intro3.grelka.right, res.img.intro3.grelka.whole, res.img.intro3.fireball, res.img.like, res.img.numbers, res.img.numbers7, res.img.scene, res.img.vs];
+            return [res.img.avatar.left0, res.img.avatar.left1, res.img.avatar.leftAlert, res.img.avatar.right0, res.img.colon, res.img.finishHim, res.img.intro0, res.img.intro3.grelka.left, res.img.intro3.grelka.right, res.img.intro3.grelka.whole, res.img.intro3.fireball, res.img.like.left, res.img.like.right, res.img.numbers, res.img.numbers7, res.img.scene, res.img.placeholder, res.img.vs];
+        },
+        leftRight: function(){
+            return [res.img.intro1, res.img.intro2, res.img.intro3.bg];
         }
     },
     snd: {

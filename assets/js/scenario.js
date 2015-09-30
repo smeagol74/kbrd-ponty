@@ -1,7 +1,7 @@
 var scenario = {
     current: 0,
     init: function () {
-        //scene.render();
+        scene.render();
     },
     play: function () {
         if (scenario.current < scenario.stages.length) {
@@ -11,17 +11,15 @@ var scenario = {
         }
     },
     stages: [
-        intro.play,
+        //intro.play,
         scene.counter.set(0, 5, 1000),
         scene.counter.set(10, 5, 1000),
         scene.counter.set(10, 15, 1000),
+        scene.changeLeftAvatar(),
         scene.like.showLeft(1),
         scene.like.set(5, 0, 3000),
         scene.like.set(234, 0, 5000),
         scene.like.set(998, 0, 2000),
-        scene.like.showRight(1),
-        scene.like.set(998, 5, 3000),
-        scene.like.set(998, 235, 2000),
         scene.counter.set(10, 10, 1000),
         scene.counter.set(451, 555, 1000),
         scene.counter.startAuto(0, -1, 1000),
@@ -54,6 +52,7 @@ var scenario = {
         scene.finishHim(),
         //scene.counter.auto(0, -3, 1000),
         //scene.counter.win(34, 1000),
-        scene.counter.set(451, 7777, 10000)
+        scene.counter.set(451, 7777, 10000),
+        titles.play
     ]
 };
