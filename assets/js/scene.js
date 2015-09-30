@@ -348,13 +348,16 @@ var scene = {
             return true;
         });
     },
-    changeLeftAvatar: function(){
+    changeLeftAvatar: function(next){
         return scene.execRendered(function () {
             console.group('scene.changeLeftAvatar');
             chainImmediately(
                 scene.animate.changeLeftAvatar(),
                 function () {
                     console.groupEnd();
+                    if (_.isFunction(next)) {
+                        next();
+                    }
                     return $.when();
                 }
             );
@@ -439,7 +442,7 @@ var scene = {
                 }
             }
 
-            var duration = 1500;
+            var duration = 1000;
             return function () {
                 sprite.alpha = 0.5;
                 var tween = {
@@ -454,10 +457,10 @@ var scene = {
                 var chain = [startTweenDeferred(tween.move, tween.show, tween.scale)];
                 var val = 0;
                 while(val < value) {
-                    val += Math.ceil(Math.random() * (value - val) / 10);
+                    val += Math.ceil(Math.random() * (value - val) / 20);
                     if (val > value)
                         val = value;
-                    chain.push(delay(100));
+                    chain.push(delay(time / 10));
                     chain.push(setText(val));
                 }
                 return chainImmediately.apply(this, chain);
@@ -552,7 +555,6 @@ var scene = {
             return chainDeferred(
                 startTweenDeferred(tween.showAlert),
                 startTweenDeferred(tween.hideOld, tween.showNew),
-                delay(1000),
                 startTweenDeferred(tween.hideAlert)
             );
         },
