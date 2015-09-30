@@ -194,26 +194,20 @@ var scene = {
                             scene.animate.updateCounters(scene.sprite.counter.right, 999, 7600, time0)
                         ));
                         chain.push(function () {
-                            var def = new $.Deferred();
                             scene.sprite.counter.right.a.loadTexture(res.img.numbers7);
-                            def.resolve();
-                            return def.promise();
+                            return $.when();
                         });
                         time0 = time / (right - scene.model.counter.right) * (7760 - 7600);
                         chain.push(scene.animate.updateCounters(scene.sprite.counter.right, 7600, 7760, time0));
                         chain.push(function () {
-                            var def = new $.Deferred();
                             scene.sprite.counter.right.b.loadTexture(res.img.numbers7);
-                            def.resolve();
-                            return def.promise();
+                            return $.when();
                         });
                         time0 = time / (right - scene.model.counter.right) * (7776 - 7760);
                         chain.push(scene.animate.updateCounters(scene.sprite.counter.right, 7760, 7776, time0));
                         chain.push(function () {
-                            var def = new $.Deferred();
                             scene.sprite.counter.right.c.loadTexture(res.img.numbers7);
-                            def.resolve();
-                            return def.promise();
+                            return $.when();
                         });
                         time0 = time / (right - scene.model.counter.right) * (7777 - 7776);
                         chain.push(scene.animate.updateCounters(scene.sprite.counter.right, 7776, 7777, time0));
