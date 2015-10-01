@@ -467,17 +467,19 @@ var scene = {
                 //return chainImmediately.apply(this, chain);
                 return chainImmediately(
                     startTweenDeferred(tween.move, tween.show, tween.scale),
+                    setText(1),
+                    delay(200),
                     setText(5),
-                    delay(200),
-                    setText(15),
                     delay(1000),
-                    setText(16),
-                    delay(1000),
-                    setText(18),
+                    setText(6),
                     delay(500),
-                    setText(19),
-                    delay(200),
-                    setText(20)
+                    setText(28),
+                    delay(700),
+                    setText(91),
+                    delay(400),
+                    setText(112),
+                    delay(600),
+                    setText(128)
                 );
             }
         },
