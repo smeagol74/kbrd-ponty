@@ -59,7 +59,7 @@ var scenario = {
         scene.counter.updateAuto(0, -10, 800),
         scene.counter.updateAuto(0, -15, 500),
         scene.counter.updateAuto(0, -15, 300),
-        scene.counter.set(998, 75, 10),
+        scene.counter.set(998, 75, 100),
         scene.counter.set(998, 100, 500),
         scene.counter.set(998, 200, 500),
         scene.counter.set(998, 999, 500),

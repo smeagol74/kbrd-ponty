@@ -353,6 +353,7 @@ var scene = {
             console.group('scene.changeLeftAvatar');
             chainImmediately(
                 scene.animate.changeLeftAvatar(),
+                delay(2000),
                 function () {
                     console.groupEnd();
                     if (_.isFunction(next)) {
@@ -454,16 +455,30 @@ var scene = {
                         .to(_layout.visible.scale, duration, Phaser.Easing.Elastic.Out)
                 };
                 playSoundImmediately(snd.like);
-                var chain = [startTweenDeferred(tween.move, tween.show, tween.scale)];
-                var val = 0;
-                while(val < value) {
-                    val += Math.ceil(Math.random() * (value - val) / 20);
-                    if (val > value)
-                        val = value;
-                    chain.push(delay(time / 10));
-                    chain.push(setText(val));
-                }
-                return chainImmediately.apply(this, chain);
+                //var chain = [startTweenDeferred(tween.move, tween.show, tween.scale)];
+                //var val = 0;
+                //while(val < value) {
+                //    val += Math.ceil(Math.random() * (value - val) / 20);
+                //    if (val > value)
+                //        val = value;
+                //    chain.push(delay(time / 10));
+                //    chain.push(setText(val));
+                //}
+                //return chainImmediately.apply(this, chain);
+                return chainImmediately(
+                    startTweenDeferred(tween.move, tween.show, tween.scale),
+                    setText(5),
+                    delay(200),
+                    setText(15),
+                    delay(1000),
+                    setText(16),
+                    delay(1000),
+                    setText(18),
+                    delay(500),
+                    setText(19),
+                    delay(200),
+                    setText(20)
+                );
             }
         },
         win: function (sprite) {
