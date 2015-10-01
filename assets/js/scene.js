@@ -546,9 +546,9 @@ var scene = {
                 showAlert: mkTween('scene.animation.changeLeftAvatar.showAlert', sprite.alert)
                     .to({alpha: 1}, 1000, Phaser.Easing.Linear.None),
                 hideOld: mkTween('scene.animation.changeLeftAvatar.hideOld', scene.sprite.avatar.left0)
-                    .to({alpha: 0}, 1000, Phaser.Easing.Linear.None),
+                    .to({alpha: 0}, 2500, Phaser.Easing.Linear.None),
                 showNew: mkTween('scene.animation.changeLeftAvatar.showNew', scene.sprite.avatar.left1)
-                    .to({alpha: 1}, 1000, Phaser.Easing.Linear.None),
+                    .to({alpha: 1}, 2500, Phaser.Easing.Linear.None),
                 hideAlert: mkTween('scene.animation.changeLeftAvatar.hideAlert', sprite.alert)
                     .to({alpha: 0}, 1000, Phaser.Easing.Linear.None)
             };
