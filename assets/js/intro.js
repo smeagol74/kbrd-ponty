@@ -3,25 +3,28 @@
  */
 var intro = {
     img: {},
-    play: function () {
-        console.group('intro.play');
-        return intro.championship()
-            .then(delay(1000))
-            .then(intro.doudaVsEfimovitch)
-            .then(delay(1000))
-            .then(intro.opytVsMolodost)
-            .then(delay(1000))
-            .then(intro.grelka)
-            .then(delay(1000))
-            .then(intro.scene)
-            .then(intro.destroyIntro)
-            .then(function () {
-                console.groupEnd();
-                return $.when();
-            });
+    play: function (sound, img) {
+        return function(){
+            console.group('intro.play');
+            playSoundImmediately(snd[sound]);
+            return intro.championship(img)
+                .then(delay(1000))
+                .then(intro.doudaVsEfimovitch)
+                .then(delay(1400))
+                .then(intro.opytVsMolodost)
+                .then(delay(1000))
+                .then(intro.grelka)
+                .then(delay(1000))
+                .then(intro.scene)
+                .then(intro.destroyIntro)
+                .then(function () {
+                    console.groupEnd();
+                    return $.when();
+                });
+        }
     },
-    championship: function () {
-        var sprite = mkSprite(0, 0, res.img.intro0, layer.intro);
+    championship: function (img) {
+        var sprite = mkSprite(0, 0, img, layer.intro);
         intro.img.championship = {
             intro: sprite
         };

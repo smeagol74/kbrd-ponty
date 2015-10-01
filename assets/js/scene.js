@@ -376,7 +376,7 @@ var scene = {
             return joinDeferred(
                 chainDeferred(startTweenDeferred(tween.dropCounter)),
                 chainDeferred(delay(300), startTweenDeferred(tween.breakColon)),
-                chainDeferred(delay(300), playSoundDeferred(snd.punch))
+                chainDeferred(delay(300), playSoundDeferred(snd.punch), playSoundDeferred(snd.roll))
             );
         },
         updateCounters: function (sprite, valueFrom, valueTo, duration) {
@@ -477,7 +477,7 @@ var scene = {
                 tween.push(mkTween('scene.animate.win.c', sprite.c).to({alpha: 0.4}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
                 //tween.push(mkTween('scene.animate.win.avatar', scene.sprite.avatar.right0).to({alpha: 0.4}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
                 tween.push(mkTween('scene.animate.win.avatar.scale', scene.sprite.avatar.right0.scale).to({x: 1.05, y: 1.05}, 1000, Phaser.Easing.Linear.None, false, 0, 10000, true));
-                playSoundImmediately(snd.win);
+                playSoundImmediately(snd.triumph);
                 return startTweenImmediately.apply(this, tween);
             }
         },
@@ -571,5 +571,26 @@ var scene = {
                 .to({x: 1, y: 1}, 500, Phaser.Easing.Bounce.Out);
             startTweenImmediately(tween);
         }
+    },
+    reset: function(){
+        var s = scene.sprite;
+        s.avatar.left0.destroy();
+        s.avatar.left1.destroy();
+        s.avatar.right0.destroy();
+        s.bg.destroy();
+        s.colon.destroy();
+        s.counter.left.a.destroy();
+        s.counter.left.b.destroy();
+        s.counter.left.c.destroy();
+        s.counter.right.a0.destroy();
+        s.counter.right.a.destroy();
+        s.counter.right.b.destroy();
+        s.counter.right.c.destroy();
+        s.like.left.destroy();
+        s.like.right.destroy();
+        s.like.text.left.destroy();
+        s.like.text.right.destroy();
+        s.placeholder.destroy();
+        return true;
     }
 };

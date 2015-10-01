@@ -45,12 +45,17 @@ function create() {
     };
 
     snd = {
+        intro1: app.add.sound(res.snd.intro1),
+        intro2: app.add.sound(res.snd.intro2),
+        intro3: app.add.sound(res.snd.intro3),
         finishHim: app.add.sound(res.snd.finishHim),
         hitmarker: app.add.sound(res.snd.hitmarker),
         like: app.add.sound(res.snd.like),
         punch: app.add.sound(res.snd.punch),
+        roll: app.add.sound(res.snd.roll),
         tickDown: app.add.sound(res.snd.tickDown),
         tickUp: app.add.sound(res.snd.tickUp),
+        triumph: app.add.sound(res.snd.triumph),
         win: app.add.sound(res.snd.win)
     };
 

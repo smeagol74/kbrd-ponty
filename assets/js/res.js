@@ -8,7 +8,9 @@ var res = {
             leftAlert: 'avatar.left.alert'
         },
         finishHim: 'finish-him',
-        intro0: 'intro-0',
+        intro01: 'intro-0.1',
+        intro02: 'intro-0.2',
+        intro03: 'intro-0.3',
         intro1: 'intro-1',
         intro2: 'intro-2',
         intro3: {
@@ -31,22 +33,40 @@ var res = {
         seven: 'seven',
         vs: 'vs',
         _all: function(){
-            return [res.img.avatar.left0, res.img.avatar.left1, res.img.avatar.leftAlert, res.img.avatar.right0, res.img.colon, res.img.finishHim, res.img.intro0, res.img.intro3.grelka.left, res.img.intro3.grelka.right, res.img.intro3.grelka.whole, res.img.intro3.fireball, res.img.like.left, res.img.like.right, res.img.numbers, res.img.numbers7, res.img.scene, res.img.placeholder, res.img.vs];
+            return [res.img.avatar.left0, res.img.avatar.left1, res.img.avatar.leftAlert, res.img.avatar.right0, res.img.colon, res.img.finishHim, res.img.intro01, res.img.intro02, res.img.intro03, res.img.intro3.grelka.left, res.img.intro3.grelka.right, res.img.intro3.grelka.whole, res.img.intro3.fireball, res.img.like.left, res.img.like.right, res.img.numbers, res.img.numbers7, res.img.scene, res.img.placeholder, res.img.vs];
         },
         leftRight: function(){
             return [res.img.intro1, res.img.intro2, res.img.intro3.bg];
         }
     },
     snd: {
+        intro1: 'intro-1',
+        intro2: 'intro-2',
+        intro3: 'intro-3',
         finishHim: 'finish-him',
         hitmarker: 'hitmarker',
         like: 'like',
         punch: 'punch',
+        roll: 'roll',
         tickDown: 'tick-down',
         tickUp: 'tick-up',
+        triumph: 'triumph',
         win: 'win',
         _all: function(){
-            return [res.snd.finishHim, res.snd.hitmarker, res.snd.like, res.snd.punch, res.snd.tickUp, res.snd.tickDown, res.snd.win];
+            return [
+                res.snd.intro1,
+                res.snd.intro2,
+                res.snd.intro3,
+                res.snd.finishHim,
+                res.snd.hitmarker,
+                res.snd.like,
+                res.snd.punch,
+                res.snd.roll,
+                res.snd.tickUp,
+                res.snd.tickDown,
+                res.snd.triumph,
+                res.snd.win
+            ];
         }
     },
     key: {
