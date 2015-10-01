@@ -14,7 +14,8 @@ var scene = {
         scene.sprite.avatar = {
             left0: mkSprite(0, 0, res.img.avatar.left0, layer.scene),
             left1: mkSprite(0, 0, res.img.avatar.left1, layer.scene, {alpha: 0}),
-            right0: mkSprite(0, 0, res.img.avatar.right0, layer.scene)
+            right0: mkSprite(0, 0, res.img.avatar.right0, layer.scene),
+            alert: mkSprite(0, 0, res.img.avatar.leftAlert, layer.fireworks, {alpha: 0})
         };
         scene.sprite.placeholder = mkSprite(0, 0, res.img.placeholder, layer.scene);
         scene.sprite.counter = {
@@ -365,6 +366,30 @@ var scene = {
             return true;
         });
     },
+    showChangeLeftAvatarAlert: function(){
+        return function(){
+            chainImmediately(
+                scene.animate.showLeftChangeAvatarAlert()
+            );
+            return true;
+        }
+    },
+    hideChangeLeftAvatarAlert: function(next){
+        return function(){
+            chainImmediately(
+                scene.animate.hideLeftChangeAvatarAlert(),
+                delay(2000),
+                function () {
+                    console.groupEnd();
+                    if (_.isFunction(next)) {
+                        next();
+                    }
+                    return $.when();
+                }
+            );
+            return true;
+        }
+    },
     animate: {
         dropFourthRightCounter: function () {
             var tween = {
@@ -556,21 +581,27 @@ var scene = {
             }
         },
         changeLeftAvatar: function(){
-            var sprite = {
-                alert: mkSprite(0, 0, res.img.avatar.leftAlert, layer.fireworks, {alpha: 0})
-            };
+            return chainDeferred(
+                scene.animate.showLeftChangeAvatarAlert(),
+                delay(1000),
+                scene.animate.hideLeftChangeAvatarAlert()
+            );
+        },
+        showLeftChangeAvatarAlert: function(){
+            var tween = mkTween('scene.animation.showLeftChangeAvatarAlert', scene.sprite.avatar.alert)
+                .to({alpha: 1}, 1000, Phaser.Easing.Linear.None);
+            return startTweenDeferred(tween);
+        },
+        hideLeftChangeAvatarAlert: function(){
             var tween = {
-                showAlert: mkTween('scene.animation.changeLeftAvatar.showAlert', sprite.alert)
-                    .to({alpha: 1}, 1000, Phaser.Easing.Linear.None),
                 hideOld: mkTween('scene.animation.changeLeftAvatar.hideOld', scene.sprite.avatar.left0)
-                    .to({alpha: 0}, 2500, Phaser.Easing.Linear.None),
+                    .to({alpha: 0}, 100, Phaser.Easing.Linear.None),
                 showNew: mkTween('scene.animation.changeLeftAvatar.showNew', scene.sprite.avatar.left1)
-                    .to({alpha: 1}, 2500, Phaser.Easing.Linear.None),
-                hideAlert: mkTween('scene.animation.changeLeftAvatar.hideAlert', sprite.alert)
+                    .to({alpha: 1}, 100, Phaser.Easing.Linear.None),
+                hideAlert: mkTween('scene.animation.changeLeftAvatar.hideAlert', scene.sprite.avatar.alert)
                     .to({alpha: 0}, 1000, Phaser.Easing.Linear.None)
             };
             return chainDeferred(
-                startTweenDeferred(tween.showAlert),
                 startTweenDeferred(tween.hideOld, tween.showNew),
                 startTweenDeferred(tween.hideAlert)
             );

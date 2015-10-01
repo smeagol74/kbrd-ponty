@@ -36,9 +36,8 @@ var scenario = {
         scene.counter.set(400, 400, 500),
         scene.counter.set(400, 500, 500),
         scene.counter.set(300, 400, 500),
-        scene.changeLeftAvatar(
-            scene.like.showLeft(128, 500)
-        ),
+        scene.showChangeLeftAvatarAlert(),
+        scene.hideChangeLeftAvatarAlert(scene.like.showLeft(128, 500)),
         scene.counter.set(300, 450, 500),
         scene.counter.set(300, 550, 500),
         scene.counter.set(300, 650, 500),
