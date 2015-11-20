@@ -53,6 +53,8 @@ function create() {
         like: app.add.sound(res.snd.like),
         punch: app.add.sound(res.snd.punch),
         roll: app.add.sound(res.snd.roll),
+        sechin: app.add.sound(res.snd.sechin),
+        siri: app.add.sound(res.snd.siri),
         tickDown: app.add.sound(res.snd.tickDown),
         tickUp: app.add.sound(res.snd.tickUp),
         triumph: app.add.sound(res.snd.triumph),

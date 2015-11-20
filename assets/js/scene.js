@@ -39,7 +39,7 @@ var scene = {
 
         scene.sprite.like = {
             left: mkSprite(layout.like.left.hidden.x, layout.like.left.hidden.y, res.img.like.left, layer.like, layout.like.left.hidden),
-            right: mkSprite(layout.like.right.hidden.x, layout.like.right.hidden.y, res.img.like, layer.like, layout.like.right.hidden),
+            right: mkSprite(layout.like.right.hidden.x, layout.like.right.hidden.y, res.img.like.right, layer.like, layout.like.right.hidden),
             text: {
                 left: mkText(layout.like.left.text.x, layout.like.left.text.y, '', layer.like, layout.like.left.text.style),
                 right: mkText(layout.like.right.text.x, layout.like.right.text.y, '', layer.like, layout.like.right.text.style)
@@ -149,7 +149,7 @@ var scene = {
         set: function (left, right, time) {
 
             return scene.execRendered(function () {
-                console.group('scene.counter.set', left, ':', right, 'in', time, 'ms');
+                console.group('Установить счет', left, ':', right);
                 scene.model.counter.auto.isActive = false;
 
                 var chain = [];
@@ -234,6 +234,7 @@ var scene = {
                     }
                 }
                 chain.push(function () {
+                    console.log('Состояние счетчика', scene.model.counter.left, ':', scene.model.counter.right);
                     console.groupEnd();
                 });
                 if (scene.model.counter.left != left) {
@@ -258,7 +259,7 @@ var scene = {
         startAuto: function (left, right, time) {
             var model = scene.model.counter;
             return scene.execRendered(function () {
-                console.log('scene.counter.startAuto', left, ':', right, 'per', time, 'ms');
+                console.log('Счетчик автомат скорость', left, ':', right, 'за', time, 'мс');
                 model.auto.left = left;
                 model.auto.right = right;
                 model.auto.time = time;
@@ -270,7 +271,7 @@ var scene = {
         updateAuto: function(left, right, time) {
             var model = scene.model.counter;
             return scene.execRendered(function () {
-                console.log('scene.counter.updateAuto', left, ':', right, 'per', time, 'ms');
+                console.log('Счетчик автомат скорость', left, ':', right, 'за', time, 'мс');
                 model.auto.left = left;
                 model.auto.right = right;
                 model.auto.time = time;
@@ -301,17 +302,18 @@ var scene = {
     like: {
         set: function (left, right, time) {
             return scene.execRendered(function () {
-                console.group('scene.like.set', left, ':', right, 'in', time, 'ms');
+                console.group('Установить лайки', left, ':', right);
                 if (left > 0)
                     scene.sprite.like.text.left.setText(left);
                 if (right > 0)
                     scene.sprite.like.text.right.setText(right);
+                console.groupEnd();
                 return true;
             });
         },
         showLeft: function(value, time){
             return scene.execRendered(function () {
-                console.group('scene.like.showLeft');
+                console.group('Показать левый лайк');
                 chainImmediately(
                     scene.animate.showLike(value, time, scene.sprite.like.left, layout.like.left, scene.sprite.like.text.left),
                     function () {
@@ -324,7 +326,7 @@ var scene = {
         },
         showRight: function(value){
             return scene.execRendered(function () {
-                console.group('scene.like.showRight');
+                console.group('Показать правый лайк');
                 chainImmediately(
                     scene.animate.showLike(value, scene.sprite.like.right, layout.like.right, scene.sprite.like.text.right),
                     function () {
@@ -338,7 +340,7 @@ var scene = {
     },
     finishHim: function () {
         return scene.execRendered(function () {
-            console.group('scene.finishHim');
+            console.group('Finish HIM!!!');
             chainImmediately(
                 scene.animate.finishHim(),
                 function () {
@@ -351,7 +353,7 @@ var scene = {
     },
     changeLeftAvatar: function(next){
         return scene.execRendered(function () {
-            console.group('scene.changeLeftAvatar');
+            console.group('Подменить левый аватар (комплекс) + показать лайки');
             chainImmediately(
                 scene.animate.changeLeftAvatar(),
                 delay(2000),
@@ -368,6 +370,7 @@ var scene = {
     },
     showChangeLeftAvatarAlert: function(){
         return function(){
+            console.group('Показать окошко про смену левого аватара');
             chainImmediately(
                 scene.animate.showLeftChangeAvatarAlert()
             );
@@ -376,6 +379,7 @@ var scene = {
     },
     hideChangeLeftAvatarAlert: function(next){
         return function(){
+            console.group('Спрятать окошко про смену левого аватара и через паузу показать лайки');
             chainImmediately(
                 scene.animate.hideLeftChangeAvatarAlert(),
                 delay(2000),
@@ -389,6 +393,15 @@ var scene = {
             );
             return true;
         }
+    },
+    playSound: function(sound, next){
+      return function(){
+        var s = playSoundImmediately(snd[sound]);
+        if (_.isFunction(next)) {
+          s.then(next);
+        }
+        return true;
+      };
     },
     animate: {
         dropFourthRightCounter: function () {
@@ -425,15 +438,13 @@ var scene = {
             mkChain(animations, turns.c, sprite.c);
 
             return chainDeferred(joinDeferred.apply(this, animations), function () {
-                var res = new $.Deferred();
                 if (sprite.a0) {
                     sprite.a0.tilePosition.y = scene.model.counter.tilePosition(digits.a0);
                 }
                 sprite.a.tilePosition.y = scene.model.counter.tilePosition(digits.a);
                 sprite.b.tilePosition.y = scene.model.counter.tilePosition(digits.b);
                 sprite.c.tilePosition.y = scene.model.counter.tilePosition(digits.c);
-                res.resolve();
-                return res.promise();
+                return $.when();
             });
         },
         updateCounter: function (sprite, delta, duration) {
@@ -464,6 +475,7 @@ var scene = {
             function setText(v) {
                 return function(){
                     text.setText(v);
+                    console.log('Установить лайки', v);
                     return $.when();
                 }
             }
@@ -575,7 +587,11 @@ var scene = {
                         playSoundImmediately(snd.hitmarker);
                         return $.when();
                     }
-                ).then(scene.animate.startAuto);
+                ).then(function(){
+                  console.log('Состояние счетчика', model.left, ':', model.right);
+                  return $.when(); 
+                })
+                 .then(scene.animate.startAuto);
             } else {
                 return $.when();
             }

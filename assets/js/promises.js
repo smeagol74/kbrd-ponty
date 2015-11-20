@@ -4,7 +4,7 @@ function startTweenDeferred() {
     function promise(tween) {
         var deferred = new $.Deferred();
         tween.onComplete.addOnce(function(){
-            console.log('--- completed tween: ' + tween.name);
+            // console.log('--- completed tween: ' + tween.name);
             deferred.resolve();
         });
         return deferred.promise();
@@ -18,7 +18,7 @@ function startTweenDeferred() {
             res = $.when.apply(null, _(tweens).map(promise));
         }
         _(tweens).each(function(tween){
-            console.log('+++ started tween: ' + tween.name);
+            // console.log('+++ started tween: ' + tween.name);
             tween.start();
         });
         return res;
@@ -31,10 +31,10 @@ function startTweenImmediately() {
 
 function delay(time) {
     return function(){
-        console.log('+++ started delay ' + time + 'ms');
+        // console.log('+++ started delay ' + time + 'ms');
         var deferred = new $.Deferred();
         setTimeout(function(){
-            console.log('--- completed delay ' + time + 'ms');
+            // console.log('--- completed delay ' + time + 'ms');
             deferred.resolve();
         }, time);
         return deferred.promise();
@@ -47,7 +47,7 @@ function playSoundDeferred() {
     function promise(sound) {
         var deferred = new $.Deferred();
         sound.onStop.addOnce(function(){
-            console.log('--- completed sound: ' + sound.name);
+            // console.log('--- completed sound: ' + sound.name);
             deferred.resolve();
         });
         return deferred.promise();
@@ -61,7 +61,7 @@ function playSoundDeferred() {
             res = $.when.apply(null, _(sounds).map(promise));
         }
         _(sounds).each(function(sound){
-            console.log('+++ started sound: ' + sound.name);
+            // console.log('+++ started sound: ' + sound.name);
             sound.play();
         });
         return res;
